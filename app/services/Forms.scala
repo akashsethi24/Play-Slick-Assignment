@@ -31,7 +31,7 @@ object Forms {
       "userId" -> number,
       "name" -> nonEmptyText,
       "fluency" -> nonEmptyText
-    )(Languages.apply)(Languages.unapply)
+    )(Languages.apply)(Laonline radionguages.unapply)
   }
 
   val addAssignments = Form{

@@ -26,4 +26,5 @@ class HomeController @Inject() extends Controller {
   def login = Action{
     Ok(views.html.login(Forms.loginForm))
   }
+
 }

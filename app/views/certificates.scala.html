@@ -1,15 +1,26 @@
-@main("Welcome to Play") {
+@(certForm: Form[Certificates])(implicit message: play.api.i18n.Messages)
+@main("Certificates") {
 
 <ul class="nav nav-pills nav-justified">
-    <li><a href="#">Home</a></li>
-    <li class="active"><a href="#">Certificates</a></li>
-    <li><a href="#">Languages</a></li>
-    <li><a href="#">Assignments</a></li>
-    <li><a href="#">Programming Languages</a></li>
+    <li><a href="#"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+    <li class="active"><a href="#"><span class="glyphicon glyphicon-education"></span> Certificates</a></li>
+    <li><a href="#"><span class="glyphicon glyphicon-comment"></span> Languages</a></li>
+    <li><a href="#"><span class="glyphicon glyphicon-folder-open"></span> Assignments</a></li>
+    <li><a href="#"><span class="glyphicon glyphicon-floppy-disk"></span> Programming Languages</a></li>
 </ul>
 <hr>
-<div class="container" style="margin-top:40px;">
+<div class="container" style="margin-top:20px;">
     <div class="row">
+        <div class="col-md-12" style="margin-bottom:15px;">
+            <div class="col-md-6">
+                <h1>Certificates</h1>
+            </div>
+            <div class="col-md-6" style="margin-top:25px;">
+                <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#certificateAddModal">
+                    <span class="glyphicon glyphicon-plus"></span> Add New Certificate
+                </button>
+            </div>
+        </div>
         <table class="table table-striped">
             <thead>
             <tr>
@@ -17,6 +28,8 @@
                 <th>Name</th>
                 <th>Description</th>
                 <th>Year</th>
+                <th>Edit</th>
+                <th>Delete</th>
             </tr>
             </thead>
             <tbody>
@@ -25,10 +38,47 @@
                 <td>Sample</td>
                 <td>Sample Description</td>
                 <td>2016</td>
+                <td>
+                    <button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>
+                </td>
             </tr>
             </tbody>
         </table>
+
+
     </div>
 </div>
+
+
+<!-- Modal -->
+<div id="certificateAddModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add New Certificate</h4>
+            </div>
+            <div class="modal-body">
+                @helper.form(action = routes.HomeController.index) {
+                @helper.inputText(certForm("name"),'type->"text",'class -> "form-control",'_label->"Name:",'required->true,'_help->"Required")
+                @helper.inputText(certForm("year"),'type->"number",'class -> "form-control",'_label->"Year:",'required->true,'_help->"Required")
+                @helper.textarea(certForm("year"),'style->"resize:vertical;",'class -> "form-control",'_label->"Description:",'required->true,'_help->"Required")
+                <button type="submit" class="btn btn-primary">Submit</button>
+                }
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 
 }

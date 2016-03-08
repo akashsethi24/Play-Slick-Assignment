@@ -28,7 +28,23 @@ class HomeController @Inject() extends Controller {
   }
 
   def showCertificates = Action{
-    Ok(views.html.certificates())
+    Ok(views.html.certificates(Forms.addCertificates))
+  }
+
+  def showLanguages = Action{
+    Ok(views.html.language())
+  }
+
+  def showAssignments = Action{
+    Ok(views.html.assignments())
+  }
+
+  def showProgrammingLanguages = Action{
+    Ok(views.html.programingLangauges())
+  }
+
+  def showAdminPanel = Action{
+    Ok(views.html.adminPanel())
   }
 
 }

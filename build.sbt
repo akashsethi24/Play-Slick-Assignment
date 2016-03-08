@@ -9,8 +9,9 @@ scalaVersion := "2.11.7"
 libraryDependencies ++= Seq(
   cache,
   ws,
-  "com.adrianhurt" %% "play-bootstrap" % "1.0-P24-B3-SNAPSHOT" exclude("org.webjars", "jquery"),
-  "org.webjars" % "jquery" % "2.1.0",
+  "com.adrianhurt" %% "play-bootstrap" % "1.0-P24-B3-SNAPSHOT",
+  "org.webjars" %% "webjars-play" % "2.4.0-1",
+  "org.webjars" % "bootstrap" % "3.1.1-2",
   "com.typesafe.play"   %%   "play-slick"              %   "1.1.1",
   "com.typesafe.play"   %%   "play-slick-evolutions"   %   "1.1.1",
   "com.h2database"    % 	   "h2"                    %   "1.4.187" ,
@@ -20,6 +21,7 @@ libraryDependencies ++= Seq(
 
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
-
+// Resolver is needed only for SNAPSHOT versions
+resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/"
 
 routesGenerator := InjectedRoutesGenerator

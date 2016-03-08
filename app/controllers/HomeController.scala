@@ -23,7 +23,7 @@ class HomeController @Inject() extends Controller {
     Ok(views.html.index())
   }
 
-  def login = Action{
+  def showLogin = Action{
     Ok(views.html.login(Forms.loginForm))
   }
 }

@@ -1,8 +1,10 @@
 package controllers
 
 import javax.inject._
-import play.api._
+import play.api.i18n.Messages.Implicits._
+import play.api.Play.current
 import play.api.mvc._
+import services.Forms
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
@@ -18,10 +20,10 @@ class HomeController @Inject() extends Controller {
    * a path of `/`.
    */
   def index = Action {
-    Ok(views.html.index())
+    Ok(views.html)
   }
 
   def login = Action{
-    Ok(views.html.login(Form))
+    Ok(views.html.login(Forms.loginForm))
   }
 }

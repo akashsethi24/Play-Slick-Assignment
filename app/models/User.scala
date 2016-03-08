@@ -3,7 +3,7 @@ package models
 /**
   * Created by akash on 8/3/16.
   */
-case class User(id:Int,name:String,email:String,password:String,mobile:BigInt,isAdmin:Boolean)
+case class User(name:String,email:String,password:String,mobile:String,isAdmin:Boolean,id:Option[Int] = None)
 
 case class Certificates(id:Int,userId:Int,name:String,description:String,year:Int)
 

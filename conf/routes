@@ -6,6 +6,10 @@
 GET     /                           controllers.HomeController.index
 GET     /login                           controllers.HomeController.showLogin
 GET     /certificates                           controllers.HomeController.showCertificates
+GET     /languages                           controllers.HomeController.showLanguages
+GET     /assignments                           controllers.HomeController.showAssignments
+GET     /programming                           controllers.HomeController.showProgrammingLanguages
+GET     /adminpanel                           controllers.HomeController.showAdminPanel
 # An example controller showing how to use dependency injection
 GET     /count                      controllers.CountController.count
 # An example controller showing how to write asynchronous code

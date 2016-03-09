@@ -1,21 +1,23 @@
 package controllers
 
 import javax.inject._
-import models.Certificates
+
+import play.api.libs.concurrent.Execution.Implicits._
+import play.api.libs.json.{JsString, Json}
 import play.api.mvc._
-import services.{CertificateServiceApi, LoginServiceApi, Forms}
+import services.{CertificateServiceApi, Forms, LoginServiceApi}
 import play.api.libs.concurrent.Execution.Implicits._
 import play.api.i18n.Messages.Implicits._
 import play.api.Play.current
-
 import scala.concurrent.Future
+import play.api.libs.json._
 
 /**
   * This controller creates an `Action` to handle HTTP requests to the
   * application's home page.
   */
 @Singleton
-class HomeController @Inject()(service: LoginServiceApi,certificateServies:CertificateServiceApi) extends Controller {
+class HomeController @Inject()(service: LoginServiceApi,certificateServices:CertificateServiceApi) extends Controller {
 
   /**
     * Create an Action to render an HTML page with a welcome message.
@@ -59,13 +61,14 @@ class HomeController @Inject()(service: LoginServiceApi,certificateServies:Certi
   }
 
   def showCertificates = Action { implicit request =>
-    certificateServies.createCertificateTable
+    certificateServices.createCertificateTable
     val userId = request.session.get("email").get
     println(userId)
     Ok(views.html.certificates(Forms.addCertificates,request.session.get("isAdmin").get.toBoolean, request.session.get("userId").get))
   }
 
   def addCertificate = Action.async{implicit request =>
+
   Forms.addCertificates.bindFromRequest.fold(
     badForm => {
       println(badForm)
@@ -75,19 +78,43 @@ class HomeController @Inject()(service: LoginServiceApi,certificateServies:Certi
       }
     },
     certificateData =>{
-      val result = certificateServies.insertCertificate(certificateData)
-      result.map{ affectedRow =>
-        if(affectedRow == 1){
-          println(affectedRow+"::"+certificateData)
-          Redirect(routes.HomeController.showCertificates).flashing("success"->"Certificate Added")
+      val result = certificateServices.insertCertificate(certificateData)
+      result.map{ returnedID =>
+        if(returnedID > 0){
+          println(returnedID+"::"+certificateData)
+          Ok(views.html.certificates(Forms.addCertificates ,request.session.get("isAdmin").get.toBoolean,request.session.get("userId").get))
         }
         else{
-          println("Failed : "+affectedRow)
+          println("Failed : "+returnedID)
           Redirect(routes.HomeController.showCertificates).flashing("error" -> "Unable to add Certificate")
         }
       }
     }
   )
+  }
+
+  def getCertificateList = Action.async{
+
+    val a = certificateServices.getCertificateByUser(1)
+    a.map{list =>
+    Ok(views.html.certificateTable(list)).as("text/html")
+    }
+  }
+
+  def getLanguageList = Action.async{
+
+    val a = certificateServices.getCertificateByUser(1)
+    a.map{list =>
+      Ok(views.html.certificateTable(list)).as("text/html")
+    }
+  }
+
+  def getAssignmnentList = Action.async{
+
+    val a = certificateServices.getCertificateByUser(1)
+    a.map{list =>
+      Ok(views.html.certificateTable(list)).as("text/html")
+    }
   }
 
   def showLanguages = Action {

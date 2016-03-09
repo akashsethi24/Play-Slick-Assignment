@@ -24,40 +24,17 @@ Test
                 <h1>Certificates</h1>
             </div>
             <div class="col-md-6" style="margin-top:25px;">
-                <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#certificateAddModal">
+                <button type="button" class="btn btn-success btn-lg" data-toggle="modal"
+                        data-target="#certificateAddModal">
                     <span class="glyphicon glyphicon-plus"></span> Add New Certificate
                 </button>
             </div>
         </div>
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Sr.No</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Year</th>
-                <th>Edit</th>
-                <th>Delete</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>1</td>
-                <td>Sample</td>
-                <td>Sample Description</td>
-                <td>2016</td>
-                <td>
-                    <button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        </div>
+        <div id="showCertificate" style="align:left;">
 
+        </div>
 
-    </div>
 </div>
 
 
@@ -73,13 +50,18 @@ Test
             </div>
             <div class="modal-body">
                 @helper.form(action = routes.HomeController.addCertificate) {
-                @helper.inputText(certForm("id").copy(value = Some("1")),'style->"display:None",'type->"hidden",'class -> "form-control",'_showConstraints->false,'_label->"")
-                @helper.inputText(certForm("userId").copy(value = Some(userId)),'type->"text",'readonly->true,'class -> "form-control",'_showConstraints->false,'_label->"User Id")
-                @helper.inputText(certForm("name"),'type->"text",'class -> "form-control",'_label->"Name:",'required->true,'_help->"Required")
-                @helper.inputText(certForm("year"),'type->"number",'class -> "form-control",'_label->"Year:",'required->true,'_help->"Required")
-                @helper.textarea(certForm("description"),'style->"resize:vertical;",'class -> "form-control",'_label->"Description:",'required->true,'_help->"Required")
-                <button type="submit" class="btn btn-primary">Submit</button>
+                @helper.inputText(certForm("id").copy(value = Some("1")),'style->"display:None",'type->"hidden",'class
+                -> "form-control",'_showConstraints->false,'_label->"")
+                @helper.inputText(certForm("userId").copy(value = Some(userId)),'type->"text",'readonly->true,'class ->
+                "form-control",'_showConstraints->false,'_label->"User Id")
+                @helper.inputText(certForm("name"),'type->"text",'class ->
+                "form-control",'_label->"Name:",'required->true,'_help->"Required")
+                @helper.inputText(certForm("year"),'type->"number",'class ->
+                "form-control",'_label->"Year:",'required->true,'_help->"Required")
+                @helper.textarea(certForm("description"),'style->"resize:vertical;",'class ->
+                "form-control",'_label->"Description:",'required->true,'_help->"Required")
                 }
+                <button type="submit" id="addCert" class="btn btn-primary">Submit</button>
 
             </div>
             <div class="modal-footer">
@@ -89,6 +71,5 @@ Test
 
     </div>
 </div>
-
 
 }

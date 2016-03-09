@@ -15,6 +15,10 @@ class AssignmentRepository  @Inject()(protected val dbConfigProvider: DatabaseCo
 
   import driver.api._
 
+  def createAssignmentTable():Unit = {
+
+    db.run(assignmentTable.schema.create)
+  }
 
   def insertAssignment(assignments: Assignments): Future[Int] = {
 

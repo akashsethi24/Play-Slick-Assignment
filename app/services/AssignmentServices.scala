@@ -13,6 +13,7 @@ import scala.concurrent.Future
 @ImplementedBy(classOf[AssignmentServices])
 trait AssignmentServiceApi{
 
+  def createAssignmentTable():Unit
   def insertAssignment(assignment:Assignments):Future[Int]
   def deleteAssignment(id:Int):Future[Int]
   def updateAssignment(assignments: Assignments):Future[Int]
@@ -39,4 +40,10 @@ class AssignmentServices @Inject()(assignRepo:AssignmentRepository) extends Assi
 
     assignRepo.geAssignmentByUser(id)
   }
+
+  override def createAssignmentTable(): Unit = {
+
+    assignRepo.createAssignmentTable()
+  }
+
 }

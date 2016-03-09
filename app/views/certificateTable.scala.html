@@ -1,0 +1,27 @@
+@(list:List[Certificates])
+<table class="table table-striped" id="certificateTable" style="align:left;">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Year</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    @list.map{ certificate =>
+    <tr>
+        <td>@certificate.name</td>
+        <td>@certificate.description</td>
+        <td>@certificate.year</td>
+        <td>
+            <button type="button" id="updateCertificate" value="@certificate.id" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
+        </td>
+        <td>
+            <button type="button" id="deleteCertificate" value="@certificate.id" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>
+        </td>
+    </tr>
+     }
+    </tbody>
+</table>

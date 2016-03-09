@@ -4,14 +4,14 @@ import com.google.inject.{ImplementedBy, Inject}
 import models.User
 import repo.UserRepository
 import scala.concurrent.Future
-
+import scala.concurrent.ExecutionContext.Implicits.global
 /**
   * Created by akash on 8/3/16.
   */
 @ImplementedBy(classOf[LoginService])
 trait LoginServiceApi  {
 
-  def getUserByEmail(email:String):Future[Option[User]]
+  def getUserByEmail(email:String,password:String):Future[Option[User]]
 
   def isUserAdmin(user:User):Boolean
 
@@ -21,9 +21,24 @@ trait LoginServiceApi  {
 
 class LoginService @Inject()(userRepo:UserRepository) extends LoginServiceApi {
 
-  override def getUserByEmail(email:String):Future[Option[User]] = {
+  override def getUserByEmail(email:String,password:String):Future[Option[User]] = {
 
-    userRepo.getUser(email)
+    val user = userRepo.getUser(email)
+    user.map{users =>
+      if(users.isDefined) {
+        if(password == users.get.password)
+          {
+            users
+          }
+        else{
+          None
+        }
+    }
+    else
+      {
+        None
+      }
+    }
   }
 
   override def isUserAdmin(user:User):Boolean = {

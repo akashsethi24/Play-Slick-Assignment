@@ -4,7 +4,7 @@ import com.google.inject.{ImplementedBy, Inject}
 import models.User
 import repo.UserRepository
 import scala.concurrent.Future
-
+import scala.concurrent.ExecutionContext.Implicits.global
 /**
   * Created by akash on 8/3/16.
   */

@@ -5,6 +5,7 @@ import play.api.mvc._
 import services.{LoginServiceApi, Forms}
 import play.api.i18n.Messages.Implicits._
 import play.api.Play.current
+import scala.concurrent.ExecutionContext.Implicits.global
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the

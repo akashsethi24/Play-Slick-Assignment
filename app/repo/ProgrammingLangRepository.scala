@@ -10,21 +10,10 @@ import scala.concurrent.Future
 /**
   * Created by akash on 8/3/16.
   */
-class ProgrammingLangRepository  @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends HasDatabaseConfigProvider[JdbcProfile] {
+class ProgrammingLangRepository  @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
+  extends HasDatabaseConfigProvider[JdbcProfile] with ProgrammingLangTable{
 
   import driver.api._
-
-  private val programmingLangTable = TableQuery[ProgrammingLangTable]
-
-  private class ProgrammingLangTable(tag: Tag) extends Table[ProgrammingLanguages](tag, "programmingLang") {
-
-    val id = column[Int]("prog_id", O.PrimaryKey, O.AutoInc)
-    val userId = column[Int]("user_id")
-    val name = column[String]("prog_email", O.SqlType("VARCHAR(30)"))
-    val fluency = column[String]("prog_fluency", O.SqlType("VARCHAR(20)"))
-
-    def * = (id, userId, name, fluency) <>(ProgrammingLanguages.tupled, ProgrammingLanguages.unapply)
-  }
 
   def insertProgrammingLang(programmingLang: ProgrammingLanguages): Future[Int] = {
 
@@ -51,4 +40,25 @@ class ProgrammingLangRepository  @Inject()(protected val dbConfigProvider: Datab
     val getAction = db.run(getCertificate.to[List].result)
     getAction
   }
+
+}
+
+private[repo] trait ProgrammingLangTable {
+  self: HasDatabaseConfigProvider[JdbcProfile] =>
+
+  import driver.api._
+
+  protected val programmingLangTable = TableQuery[ProgrammingLangTable]
+
+  protected class ProgrammingLangTable(tag: Tag) extends Table[ProgrammingLanguages](tag, "programmingLang") {
+
+    val id = column[Int]("prog_id", O.PrimaryKey, O.AutoInc)
+    val userId = column[Int]("user_id")
+    val name = column[String]("prog_email", O.SqlType("VARCHAR(30)"))
+    val fluency = column[String]("prog_fluency", O.SqlType("VARCHAR(20)"))
+
+    def * = (id, userId, name, fluency) <>(ProgrammingLanguages.tupled, ProgrammingLanguages.unapply)
+  }
+
+
 }

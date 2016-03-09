@@ -2,7 +2,6 @@ package services
 
 import com.google.inject.{ImplementedBy, Inject}
 import models.Certificates
-import repo.CertificatesRepository
 
 import scala.concurrent.Future
 
@@ -17,7 +16,7 @@ trait CertificateServiceApi{
   def updateCertificate(certificates: Certificates):Future[Int]
   def getCertificateByUser(id:Int):Future[List[Certificates]]
 }
-class CertificateServices @Inject()(certRepo:CertificatesRepository) extends CertificateServiceApi{
+class CertificateServices @Inject()(certRepo:CertificateServiceApi) extends CertificateServiceApi{
 
   override def insertCertificate(certificate: Certificates): Future[Int] = {
 
@@ -36,6 +35,6 @@ class CertificateServices @Inject()(certRepo:CertificatesRepository) extends Cer
 
   override def getCertificateByUser(id: Int): Future[List[Certificates]] = {
 
-    certRepo.getCertificatesByUser(id)
+    certRepo.getCertificateByUser(id)
   }
 }

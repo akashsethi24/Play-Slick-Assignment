@@ -40,7 +40,7 @@ class CertificateServices @Inject()(certRepo:CertificatesRepository) extends Cer
 
     certRepo.getCertificatesByUser(id)
   }
-  
+
   override def createCertificateTable(): Unit = {
 
     certRepo.createCertificateTable()

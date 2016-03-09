@@ -6,9 +6,9 @@
     <div class="col-md-8"  style="margin-top:40px;border:solid;padding-top:10px;padding-bottom:30px;">
         <h2 style="margin-bottom:20px;text-align:center;">Login</h2>
         <hr>
-        @helper.form(action = routes.HomeController.index) {
+        @helper.form(action = routes.HomeController.processLoginForm) {
 
-        @helper.inputText(loginForm("username"),'type->"email",'class -> "form-control",'_label->"UserName:",'required->true,'_help->"Required")
+        @helper.inputText(loginForm("email"),'type->"email",'class -> "form-control",'_label->"UserName:",'required->true,'_help->"Required")
 
         @helper.inputPassword(loginForm("password"),'class -> "form-control",'_label->"Password:",'required->true,'_showConstraint->false)
 

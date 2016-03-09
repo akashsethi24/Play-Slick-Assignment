@@ -10,7 +10,8 @@ GET     /languages                           controllers.HomeController.showLang
 GET     /assignments                           controllers.HomeController.showAssignments
 GET     /programming                           controllers.HomeController.showProgrammingLanguages
 GET     /adminpanel                           controllers.HomeController.showAdminPanel
-#POST    /loginsubmit                            controllers.HomeController.processLoginForm
+POST    /loginsubmit                            controllers.HomeController.processLoginForm
+POST    /addcertificates                            controllers.HomeController.addCertificate
 # An example controller showing how to use dependency injection
 GET     /count                      controllers.CountController.count
 # An example controller showing how to write asynchronous code

@@ -19,7 +19,7 @@ object Forms {
   val addCertificates = Form{
     mapping(
       "id" -> number,
-      "userId" -> number(min=2000,max=2016),
+      "userId" -> number,
       "name" -> nonEmptyText,
       "description" -> nonEmptyText,
       "year" -> number

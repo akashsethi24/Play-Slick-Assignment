@@ -59,8 +59,8 @@ private[repo] trait CertificateTable {
 
         val id = column[Int]("cer_id", O.PrimaryKey, O.AutoInc)
         val userId = column[Int]("user_id")
-        val name = column[String]("cer_email", O.SqlType("VARCHAR(30)"))
-        val desc = column[String]("cer_desc", O.SqlType("VARCHAR(20)"))
+        val name = column[String]("cer_email", O.SqlType("VARCHAR(50)"))
+        val desc = column[String]("cer_desc", O.SqlType("VARCHAR(200)"))
         val year = column[Int]("cer_year")
 
         def * = (id, userId, name, desc, year) <>(Certificates.tupled, Certificates.unapply)

@@ -59,6 +59,7 @@ class HomeController @Inject()(service: LoginServiceApi,certificateServies:Certi
   }
 
   def showCertificates = Action { implicit request =>
+    certificateServies.createCertificateTable
     val userId = request.session.get("email").get
     println(userId)
     Ok(views.html.certificates(Forms.addCertificates,request.session.get("isAdmin").get.toBoolean, request.session.get("userId").get))

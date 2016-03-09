@@ -9,21 +9,10 @@ import scala.concurrent.Future
 /**
   * Created by akash on 8/3/16.
   */
-class LanguageRepository  @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends HasDatabaseConfigProvider[JdbcProfile] {
+class LanguageRepository  @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
+  extends HasDatabaseConfigProvider[JdbcProfile] with LanguageTable {
 
   import driver.api._
-
-  private val languageTable = TableQuery[LanguageTable]
-
-  private class LanguageTable(tag: Tag) extends Table[Languages](tag, "language") {
-
-    val id = column[Int]("lang_id", O.PrimaryKey, O.AutoInc)
-    val userId = column[Int]("user_id")
-    val name = column[String]("lang_email", O.SqlType("VARCHAR(30)"))
-    val fluency = column[String]("lang_fluency", O.SqlType("VARCHAR(20)"))
-
-    def * = (id, userId, name, fluency) <>(Languages.tupled, Languages.unapply)
-  }
 
   def insertLanguage(languages: Languages): Future[Int] = {
 
@@ -50,4 +39,24 @@ class LanguageRepository  @Inject()(protected val dbConfigProvider: DatabaseConf
     val getAction = db.run(getCertificate.to[List].result)
     getAction
   }
+
+}
+
+private[repo] trait LanguageTable {
+  self: HasDatabaseConfigProvider[JdbcProfile] =>
+
+  import driver.api._
+
+  protected val languageTable = TableQuery[LanguageTable]
+
+  protected class LanguageTable(tag: Tag) extends Table[Languages](tag, "language") {
+
+    val id = column[Int]("lang_id", O.PrimaryKey, O.AutoInc)
+    val userId = column[Int]("user_id")
+    val name = column[String]("lang_email", O.SqlType("VARCHAR(30)"))
+    val fluency = column[String]("lang_fluency", O.SqlType("VARCHAR(20)"))
+
+    def * = (id, userId, name, fluency) <>(Languages.tupled, Languages.unapply)
+  }
+
 }

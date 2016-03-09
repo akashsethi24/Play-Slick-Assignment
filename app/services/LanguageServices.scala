@@ -1,13 +1,12 @@
 package services
 
-import com.google.inject.{Inject, ImplementedBy}
+import com.google.inject.{ImplementedBy, Inject}
 import models.Languages
 import repo.LanguageRepository
-
 import scala.concurrent.Future
 
 /**
-  * Created by akash on 8/3/16.
+  * Created by akash on 9/3/16.
   */
 @ImplementedBy(classOf[LanguageServices])
 trait LanguageServiceApi{
@@ -17,6 +16,7 @@ trait LanguageServiceApi{
   def updateLanguage(languages: Languages):Future[Int]
   def getLanguageByUser(id:Int):Future[List[Languages]]
 }
+
 class LanguageServices @Inject()(langRepo:LanguageRepository) extends LanguageServiceApi{
 
   override def insertLanguage(language: Languages): Future[Int] = {
@@ -38,4 +38,5 @@ class LanguageServices @Inject()(langRepo:LanguageRepository) extends LanguageSe
 
     langRepo.getLanguageByUser(id)
   }
+
 }

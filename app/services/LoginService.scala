@@ -11,7 +11,7 @@ import scala.concurrent.Future
 @ImplementedBy(classOf[LoginService])
 trait LoginServiceApi  {
 
-  def getUserByEmail(email:String):Future[Option[User]]
+  def getUserByEmail(email:String,password:String):Future[Option[User]]
 
   def isUserAdmin(user:User):Boolean
 
@@ -21,9 +21,24 @@ trait LoginServiceApi  {
 
 class LoginService @Inject()(userRepo:UserRepository) extends LoginServiceApi {
 
-  override def getUserByEmail(email:String):Future[Option[User]] = {
+  override def getUserByEmail(email:String,password:String):Future[Option[User]] = {
 
-    userRepo.getUser(email)
+    val user = userRepo.getUser(email)
+    user.map{users =>
+      if(users.isDefined) {
+        if(password == users.get.password)
+          {
+            users
+          }
+        else{
+          None
+        }
+    }
+    else
+      {
+        None
+      }
+    }
   }
 
   override def isUserAdmin(user:User):Boolean = {

@@ -27,9 +27,6 @@ class HomeController @Inject()(service:LoginServiceApi) extends Controller {
   def showLogin = Action{implicit request =>
 
     service.createUserTable()
-    val a = service.getUserByEmail("Akash@gmail.com")
-    Thread.sleep(1000)
-    println(a.value)
     Ok(views.html.login(Forms.loginForm))
   }
 

@@ -17,8 +17,9 @@ class CertificatesRepository @Inject()(protected val dbConfigProvider: DatabaseC
     import driver.api._
 
     def createCertificateTable():Unit = {
-
-        db.run(certificateTable.schema.create)
+        val createQuery = certificateTable.schema.create
+        println(createQuery.statements.head)
+        db.run(createQuery)
     }
 
     def insertCertificate(certificates: Certificates):Future[Int] = {

@@ -3,7 +3,7 @@ package controllers
 import javax.inject._
 import models.Certificates
 import play.api.mvc._
-import services.{CertificateServiceApi, LoginServiceApi, Forms}
+import services.{AssignmentServiceApi, CertificateServiceApi, LoginServiceApi, Forms}
 import play.api.libs.concurrent.Execution.Implicits._
 import play.api.i18n.Messages.Implicits._
 import play.api.Play.current
@@ -15,7 +15,7 @@ import scala.concurrent.Future
   * application's home page.
   */
 @Singleton
-class HomeController @Inject()(service: LoginServiceApi,certificateServies:CertificateServiceApi) extends Controller {
+class HomeController @Inject()(service: LoginServiceApi,certificateServies:CertificateServiceApi,assignService:AssignmentServiceApi) extends Controller {
 
   /**
     * Create an Action to render an HTML page with a welcome message.
@@ -28,7 +28,18 @@ class HomeController @Inject()(service: LoginServiceApi,certificateServies:Certi
     Ok(views.html.index(request.session.get("email").get))
   }
 
+  /**
+    * This action is used to handle Ajax request
+    *
+    * @return
+    */
+  def ajaxCall = Action { implicit request =>
+    Ok("Ajax Call!")
+  }
+
+
   def showLogin = Action { implicit request =>
+    service.createUserTable()
     Ok(views.html.login(Forms.loginForm))
   }
 
@@ -90,19 +101,19 @@ class HomeController @Inject()(service: LoginServiceApi,certificateServies:Certi
   )
   }
 
-  def showLanguages = Action {
+  def showLanguages = Action {implicit request =>
     Ok(views.html.language())
   }
 
-  def showAssignments = Action {
+  def showAssignments = Action {implicit request =>
     Ok(views.html.assignments())
   }
 
-  def showProgrammingLanguages = Action {
+  def showProgrammingLanguages = Action {implicit request =>
     Ok(views.html.programingLangauges())
   }
 
-  def showAdminPanel = Action {
+  def showAdminPanel = Action {implicit request =>
     Ok(views.html.adminPanel())
   }
 

@@ -53,7 +53,7 @@ private[repo] trait LanguageTable {
 
     val id = column[Int]("lang_id", O.PrimaryKey, O.AutoInc)
     val userId = column[Int]("user_id")
-    val name = column[String]("lang_email", O.SqlType("VARCHAR(30)"))
+    val name = column[String]("language", O.SqlType("VARCHAR(30)"))
     val fluency = column[String]("lang_fluency", O.SqlType("VARCHAR(20)"))
 
     def * = (id, userId, name, fluency) <>(Languages.tupled, Languages.unapply)

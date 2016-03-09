@@ -1,4 +1,5 @@
-@main("Welcome to Play") {
+@(email:String)(implicit session: play.api.mvc.Session)
+@main("Welcome to Play"){
 
 <ul class="nav nav-pills nav-justified">
     <li class="active"><a href="#">Home</a></li>
@@ -10,7 +11,7 @@
 <hr>
 <div class="container" style="margin-top:40px;">
     <div class="row" style="border:solid;max-height:450px;overflow-y: scroll">
-        <h1>Lorem ipsum</h1>
+        <h1>Welcome @email</h1>
         <hr>
         <p>Lorem ipsum dolor sit amet, qui harum maluisset in, an cibo probo gubergren sea. Ea vel ridens detracto inciderint, vix te minim adversarium necessitatibus. Ex sit ferri novum, in usu eius omnes latine, suas discere apeirian per et. No ius option interesset. Graece minimum splendide mei ea.</p>
         <p>An decore voluptaria inciderint vim, vis nusquam corpora intellegam ut, viderer diceret fabulas pri cu. Te mei labitur senserit persecuti, cum erroribus principes at. Cu duis mediocrem salutandi mel, vix ex ullum vocent. Ad sed omnis scripserit, aliquip similique usu no, ad his audiam docendi quaestio. Nam ei equidem interesset. Mutat theophrastus in sit, in vix lobortis reprimique, cu soleat antiopam maluisset duo.</p>

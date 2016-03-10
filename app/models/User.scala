@@ -24,4 +24,3 @@ case class Assignments(id: Int,
 
 case class ProgrammingLanguages(
     id: Int, userId: Int, name: String, fluency: String)
-

@@ -57,15 +57,16 @@ private [repo] trait ProgrammingLangTable {
 
   protected val programmingLangTable = TableQuery[ProgrammingLangTable]
 
-  protected class ProgrammingLangTable(tag: Tag) extends Table[ProgrammingLanguages](tag, "programmingLang") {
-
+  protected class ProgrammingLangTable(tag: Tag)
+      extends Table[ProgrammingLanguages](tag, "programmingLang") {
     val id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
     val userId = column[Int]("user_id")
     val name = column[String]("name", O.SqlType("VARCHAR(30)"))
     val skillLevel = column[String]("skill_level", O.SqlType("VARCHAR(20)"))
 
-    def * = (id, userId, name, skillLevel) <>(ProgrammingLanguages.tupled, ProgrammingLanguages.unapply)
-
+    def * =
+      (id, userId, name, skillLevel) <>
+      (ProgrammingLanguages.tupled, ProgrammingLanguages.unapply)
   }
 }

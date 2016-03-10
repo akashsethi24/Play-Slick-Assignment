@@ -11,4 +11,4 @@ case class Languages(id:Int,userId:Int,name:String,fluency:String)
 
 case class Assignments(id:Int,userId:Int,name:String,date:String,remark:String,marks:Int)
 
-case class ProgrammingLanguages(id:Int,userId:Int,name:String,fluency:String)
+case class ProgrammingLanguages(id:Int,userId:Int,name:String,skillLevel:String)

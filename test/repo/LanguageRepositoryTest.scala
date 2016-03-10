@@ -10,15 +10,12 @@ import play.api.test.WithApplication
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
-/**
-  * Created by prabhat on 9/3/16.
-  */
-
 
 @RunWith(classOf[JUnitRunner])
 class LanguageRepositoryTest extends Specification{
 
   def langRepo(implicit app: Application) = Application.instanceCache[LanguageRepository].apply(app)
+
   "User repository" should {
 
     "get a record" in new WithApplication {

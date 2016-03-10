@@ -2,6 +2,8 @@ name := """Play_Slick_Assignment"""
 
 version := "1.0-SNAPSHOT"
 
+parallelExecution in Test := false
+
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.11.7"

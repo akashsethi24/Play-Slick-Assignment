@@ -10,39 +10,37 @@ import scala.concurrent.Future
   * Created by akash on 9/3/16.
   */
 @ImplementedBy(classOf[ProgrammingServices])
-trait ProgrammingServiceApi{
-
-  def createProgrammingTable():Unit
-  def insertProgramming(programmingLang:ProgrammingLanguages):Future[Int]
-  def deleteProgramming(id:Int):Future[Int]
-  def updateProgramming(programmingLang: ProgrammingLanguages):Future[Int]
-  def getProgrammingByUser(id:Int):Future[List[ProgrammingLanguages]]
+trait ProgrammingServiceApi {
+  def createProgrammingTable(): Unit
+  def insertProgramming(programmingLang: ProgrammingLanguages): Future[Int]
+  def deleteProgramming(id: Int): Future[Int]
+  def updateProgramming(programmingLang: ProgrammingLanguages): Future[Int]
+  def getProgrammingByUser(id: Int): Future[List[ProgrammingLanguages]]
 }
 
-class ProgrammingServices @Inject()(programmingRepo:ProgrammingLangRepository) extends ProgrammingServiceApi {
+class ProgrammingServices @Inject()(programmingRepo: ProgrammingLangRepository)
+    extends ProgrammingServiceApi {
 
-  override def insertProgramming(programmingLang: ProgrammingLanguages): Future[Int] = {
-
+  override def insertProgramming(
+      programmingLang: ProgrammingLanguages): Future[Int] = {
     programmingRepo.insertProgrammingLang(programmingLang)
   }
 
-  override def getProgrammingByUser(id: Int): Future[List[ProgrammingLanguages]] = {
-
+  override def getProgrammingByUser(
+      id: Int): Future[List[ProgrammingLanguages]] = {
     programmingRepo.getProgrammingLangByUser(id)
   }
 
-  override def updateProgramming(programmingLang: ProgrammingLanguages): Future[Int] = {
-
+  override def updateProgramming(
+      programmingLang: ProgrammingLanguages): Future[Int] = {
     programmingRepo.updateProgrammingLang(programmingLang)
   }
 
   override def deleteProgramming(id: Int): Future[Int] = {
-
     programmingRepo.deleteProgrammingLang(id)
   }
 
   override def createProgrammingTable(): Unit = {
-
     programmingRepo.createProgrammingTable()
   }
 }

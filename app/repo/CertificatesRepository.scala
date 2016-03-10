@@ -11,65 +11,66 @@ import scala.concurrent.Future
 /**
   * Created by akash on 8/3/16.
   */
-class CertificatesRepository @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
-  extends HasDatabaseConfigProvider[JdbcProfile] with CertificateTable{
+class CertificatesRepository @Inject()(
+    protected val dbConfigProvider: DatabaseConfigProvider)
+    extends HasDatabaseConfigProvider[JdbcProfile] with CertificateTable {
+  import driver.api._
 
-    import driver.api._
+  def createCertificateTable(): Unit = {
+    val createQuery = certificateTable.schema.create
+    println(createQuery.statements.head)
+    db.run(createQuery)
+  }
 
-    def createCertificateTable():Unit = {
-        val createQuery = certificateTable.schema.create
-        println(createQuery.statements.head)
-        db.run(createQuery)
-    }
+  def getById(id: Int): Future[Option[Certificates]] = {
+    db.run(certificateTable.filter(_.id === id).result.headOption)
+  }
 
-    def getById(id:Int):Future[Option[Certificates]] = {
+  def insertCertificate(certificates: Certificates): Future[Int] = {
+    val insertAction =
+      certificateTable.returning(certificateTable.map(_.id)) += certificates
+    db.run(insertAction)
+  }
 
-        db.run(certificateTable.filter(_.id === id).result.headOption)
-    }
+  def deleteCertificate(id: Int): Future[Int] = {
+    val deleteAction = certificateTable.filter(_.id === id).delete
+    db.run(deleteAction)
+  }
 
-    def insertCertificate(certificates: Certificates):Future[Int] = {
+  def updateCertificate(certificates: Certificates): Future[Int] = {
+    println(certificates + "End")
+    val updateCertificate =
+      certificateTable.filter(_.id === certificates.id).update(certificates)
+    println("Statement: " + updateCertificate.statements.head)
+    db.run(updateCertificate)
+  }
 
-        val insertAction = certificateTable.returning(certificateTable.map(_.id)) += certificates
-        db.run(insertAction)
-    }
-
-    def deleteCertificate(id:Int):Future[Int] = {
-
-        val deleteAction = certificateTable.filter(_.id === id).delete
-        db.run(deleteAction)
-    }
-
-    def updateCertificate(certificates: Certificates):Future[Int] = {
-
-        println(certificates+"End")
-        val updateCertificate = certificateTable.filter(_.id === certificates.id).update(certificates)
-        println("Statement: "+updateCertificate.statements.head)
-        db.run(updateCertificate)
-    }
-
-    def getCertificatesByUser(id:Int):Future[List[Certificates]] = {
-
-        val getCertificate = for{ certificate <- certificateTable if certificate.userId === id }yield certificate
-        val getAction = db.run(getCertificate.sortBy(_.id).to[List].result)
-        getAction
-    }
+  def getCertificatesByUser(id: Int): Future[List[Certificates]] = {
+    val getCertificate = for {
+      certificate <- certificateTable if certificate.userId === id
+    } yield certificate
+    val getAction = db.run(getCertificate.sortBy(_.id).to[List].result)
+    getAction
+  }
 }
 
-private[repo] trait CertificateTable {
-    self: HasDatabaseConfigProvider[JdbcProfile] =>
+private [repo] trait CertificateTable {
+  self: HasDatabaseConfigProvider[JdbcProfile] =>
 
-    import driver.api._
+  import driver.api._
 
-    protected val certificateTable = TableQuery[CertificateTable]
+  protected val certificateTable = TableQuery[CertificateTable]
 
-    protected class CertificateTable(tag:Tag) extends Table[Certificates](tag,"certificate") {
+  protected class CertificateTable(tag: Tag)
+      extends Table[Certificates](tag, "certificate") {
+    val id = column[Int]("cer_id", O.PrimaryKey, O.AutoInc)
+    val userId = column[Int]("user_id")
+    val name = column[String]("cer_email", O.SqlType("VARCHAR(50)"))
+    val desc = column[String]("cer_desc", O.SqlType("VARCHAR(200)"))
+    val year = column[Int]("cer_year")
 
-        val id = column[Int]("cer_id", O.PrimaryKey, O.AutoInc)
-        val userId = column[Int]("user_id")
-        val name = column[String]("cer_email", O.SqlType("VARCHAR(50)"))
-        val desc = column[String]("cer_desc", O.SqlType("VARCHAR(200)"))
-        val year = column[Int]("cer_year")
-
-        def * = (id, userId, name, desc, year) <>(Certificates.tupled, Certificates.unapply)
-    }
+    def * =
+      (id, userId, name, desc, year) <>
+      (Certificates.tupled, Certificates.unapply)
+  }
 }

@@ -1,0 +1,21 @@
+@(list:List[Assignments])
+<table class="table table-striped" id="certificatetable" style="align:left;">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Date</th>
+        <th>Marks</th>
+        <th>Remark</th>
+    </tr>
+    </thead>
+    <tbody>
+    @list.map{ assign =>
+    <tr>
+        <td>@assign.name</td>
+        <td>@assign.date</td>
+        <td>@assign.marks</td>
+        <td>@assign.remark</td>
+    </tr>
+    }
+    </tbody>
+</table>

@@ -12,6 +12,13 @@ GET     /programming                           controllers.HomeController.showPr
 GET     /adminpanel                           controllers.HomeController.showAdminPanel
 POST    /loginsubmit                            controllers.HomeController.processLoginForm
 POST    /addcertificates                            controllers.HomeController.addCertificate
+GET     /getCert                                controllers.HomeController.getCertificateList
+GET     /getLang                              controllers.HomeController.getLanguageList
+GET     /getAssignment                              controllers.HomeController.getAssignmentList
+GET     /getProgramming                             controllers.HomeController.getProgrammingList
+POST     /deleteCert/:id                                 controllers.HomeController.deleteCertificate(id:Int)
+GET     /getCert/:id                                     controllers.HomeController.getCertificateById(id:Int)
+POST    /editCertificate                                    controllers.HomeController.editCertificate
 GET   /ajax-call          controllers.HomeController.ajaxCall
 # An example controller showing how to use dependency injection
 GET     /count                      controllers.CountController.count

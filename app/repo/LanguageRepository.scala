@@ -14,6 +14,11 @@ class LanguageRepository  @Inject()(protected val dbConfigProvider: DatabaseConf
 
   import driver.api._
 
+  def createLanguageTable():Unit = {
+
+    db.run(languageTable.schema.create)
+  }
+
   def insertLanguage(languages: Languages): Future[Int] = {
 
     val insertAction = languageTable.returning(languageTable.map(_.id)) += languages

@@ -22,6 +22,11 @@ class CertificatesRepository @Inject()(protected val dbConfigProvider: DatabaseC
         db.run(createQuery)
     }
 
+    def getById(id:Int):Future[Option[Certificates]] = {
+
+        db.run(certificateTable.filter(_.id === id).result.headOption)
+    }
+
     def insertCertificate(certificates: Certificates):Future[Int] = {
 
         val insertAction = certificateTable.returning(certificateTable.map(_.id)) += certificates
@@ -36,15 +41,16 @@ class CertificatesRepository @Inject()(protected val dbConfigProvider: DatabaseC
 
     def updateCertificate(certificates: Certificates):Future[Int] = {
 
-        val updateCertificate = for{certificate <- certificateTable if certificate.id === certificates.id }yield certificate
-        val updateAction = updateCertificate.update(certificates)
-        db.run(updateAction)
+        println(certificates+"End")
+        val updateCertificate = certificateTable.filter(_.id === certificates.id).update(certificates)
+        println("Statement: "+updateCertificate.statements.head)
+        db.run(updateCertificate)
     }
 
     def getCertificatesByUser(id:Int):Future[List[Certificates]] = {
 
         val getCertificate = for{ certificate <- certificateTable if certificate.userId === id }yield certificate
-        val getAction = db.run(getCertificate.to[List].result)
+        val getAction = db.run(getCertificate.sortBy(_.id).to[List].result)
         getAction
     }
 }

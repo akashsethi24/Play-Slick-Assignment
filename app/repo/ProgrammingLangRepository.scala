@@ -15,6 +15,11 @@ class ProgrammingLangRepository  @Inject()(protected val dbConfigProvider: Datab
 
   import driver.api._
 
+  def createProgrammingTable():Unit = {
+
+    db.run(programmingLangTable.schema.create)
+  }
+
   def insertProgrammingLang(programmingLang: ProgrammingLanguages): Future[Int] = {
 
     val insertAction = programmingLangTable.returning(programmingLangTable.map(_.id)) += programmingLang

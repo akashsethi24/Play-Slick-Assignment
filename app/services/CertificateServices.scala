@@ -13,6 +13,7 @@ import scala.concurrent.Future
 trait CertificateServiceApi{
 
   def createCertificateTable():Unit
+  def getById(id:Int):Future[Option[Certificates]]
   def insertCertificate(certificate:Certificates):Future[Int]
   def deleteCertificate(id:Int):Future[Int]
   def updateCertificate(certificates: Certificates):Future[Int]
@@ -44,5 +45,10 @@ class CertificateServices @Inject()(certRepo:CertificatesRepository) extends Cer
   override def createCertificateTable(): Unit = {
 
     certRepo.createCertificateTable()
+  }
+
+  override def getById(id: Int): Future[Option[Certificates]] = {
+
+    certRepo.getById(id)
   }
 }

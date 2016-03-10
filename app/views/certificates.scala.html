@@ -24,61 +24,41 @@ Test
                 <h1>Certificates</h1>
             </div>
             <div class="col-md-6" style="margin-top:25px;">
-                <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#certificateAddModal">
+                <button type="button" class="btn btn-success btn-lg" data-toggle="modal"
+                        data-target="#certificateAddModal">
                     <span class="glyphicon glyphicon-plus"></span> Add New Certificate
                 </button>
             </div>
         </div>
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Sr.No</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Year</th>
-                <th>Edit</th>
-                <th>Delete</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>1</td>
-                <td>Sample</td>
-                <td>Sample Description</td>
-                <td>2016</td>
-                <td>
-                    <button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        </div>
+        <div id="showCertificate" style="align:left;">
 
+        </div>
 
-    </div>
 </div>
-
-
 <!-- Modal -->
-<div id="certificateAddModal" class="modal fade" role="dialog">
+<div id="certificateEditModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
 
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Add New Certificate</h4>
+                <h4 class="modal-title">Edit Certificate</h4>
             </div>
             <div class="modal-body">
-                @helper.form(action = routes.HomeController.addCertificate) {
-                @helper.inputText(certForm("id").copy(value = Some("1")),'style->"display:None",'type->"hidden",'class -> "form-control",'_showConstraints->false,'_label->"")
-                @helper.inputText(certForm("userId").copy(value = Some(userId)),'type->"text",'readonly->true,'class -> "form-control",'_showConstraints->false,'_label->"User Id")
-                @helper.inputText(certForm("name"),'type->"text",'class -> "form-control",'_label->"Name:",'required->true,'_help->"Required")
-                @helper.inputText(certForm("year"),'type->"number",'class -> "form-control",'_label->"Year:",'required->true,'_help->"Required")
-                @helper.textarea(certForm("description"),'style->"resize:vertical;",'class -> "form-control",'_label->"Description:",'required->true,'_help->"Required")
-                <button type="submit" class="btn btn-primary">Submit</button>
+                @helper.form(action = routes.HomeController.addCertificate,'id->"editForm") {
+                @helper.inputText(certForm("id").copy(value = Some("1")),'style->"display:None",'type->"hidden",'class
+                -> "form-control",'_showConstraints->false,'_label->"")
+                @helper.inputText(certForm("userId").copy(value = Some(userId)),'type->"text",'readonly->true,'class ->
+                "form-control",'_showConstraints->false,'_label->"User Id")
+                @helper.inputText(certForm("name"),'type->"text",'class ->
+                "form-control",'_label->"Name:",'required->true,'_help->"Required")
+                @helper.inputText(certForm("year"),'type->"number",'class ->
+                "form-control",'_label->"Year:",'required->true,'_help->"Required")
+                @helper.textarea(certForm("description"),'style->"resize:vertical;",'class ->
+                "form-control",'_label->"Description:",'required->true,'_help->"Required")
+                <button type="submit" id="editCert" class="btn btn-primary">Submit</button>
                 }
 
             </div>
@@ -91,4 +71,85 @@ Test
 </div>
 
 
+<!-- Modal -->
+    <div id="certificateAddModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add New Certificate</h4>
+            </div>
+            <div class="modal-body">
+                @helper.form(action = routes.HomeController.addCertificate,'id->"addForm") {
+                @helper.inputText(certForm("id").copy(value = Some("1")),'style->"display:None",'type->"hidden",'class
+                -> "form-control",'_showConstraints->false,'_label->"")
+                @helper.inputText(certForm("userId").copy(value = Some(userId)),'type->"text",'readonly->true,'class ->
+                "form-control",'_showConstraints->false,'_label->"User Id")
+                @helper.inputText(certForm("name"),'type->"text",'class ->
+                "form-control",'_label->"Name:",'required->true,'_help->"Required")
+                @helper.inputText(certForm("year"),'type->"number",'class ->
+                "form-control",'_label->"Year:",'required->true,'_help->"Required")
+                @helper.textarea(certForm("description"),'style->"resize:vertical;",'class ->
+                "form-control",'_label->"Description:",'required->true,'_help->"Required")
+                <button type="submit" id="addCert" class="btn btn-primary">Submit</button>
+                }
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+
+function refreshTable() {
+$.get("getCert", function(data, status){
+         $("#showCertificate").html(data)
+        });
+}
+
+refreshTable();
+
+    $("#addForm").submit(function(event) {
+
+    event.preventDefault();
+
+    $("#showCertificate").html('');
+    var values = $(this).serialize();
+         $.ajax({
+            url: "addcertificates",
+            type: "post",
+            data: values,
+            success: function (data) {
+                $("#certificateAddModal").modal('hide');
+                $("#showCertificate").html(data);
+            }
+        });
+
+     });
+
+     $("#editForm").submit(function(event) {
+    event.preventDefault();
+    $("#showCertificate").html('');
+    var values = $(this).serialize();
+         $.ajax({
+            url: "editCertificate",
+            type: "post",
+            data: values,
+            success: function (data) {
+                $("#certificateEditModal").modal('hide');
+                $("#showCertificate").html(data);
+            }
+        });
+
+     });
+
+
+});
+</script>
 }

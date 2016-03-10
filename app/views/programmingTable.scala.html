@@ -1,0 +1,25 @@
+@(list:List[ProgrammingLanguages])
+<table class="table table-striped" id="certificatetable" style="align:left;">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Fluency</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    @list.map{ lang =>
+    <tr>
+        <td>@lang.name</td>
+        <td>@lang.fluency</td>
+        <td>
+            <button type="button" id="updateProgramming" value="@lang.id" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
+        </td>
+        <td>
+            <button type="button" id="deleteProgramming" value="@lang.id" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>
+        </td>
+    </tr>
+    }
+    </tbody>
+</table>

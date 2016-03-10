@@ -1,0 +1,66 @@
+@(list:List[Certificates])
+<table class="table table-striped" id="certificateTable" style="align:left;">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Year</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    @list.map{ certificate =>
+    <tr >
+        <td>@certificate.name</td>
+        <td>@certificate.description</td>
+        <td>@certificate.year</td>
+        <td>
+                <button type="button" class="btn btn-warning editButton" value="@certificate.id" data-toggle="modal"
+                        data-target="#certificateEditModal">
+                    <span class="glyphicon glyphicon-remove"></span> Edit
+                </button>
+        </td>
+        <td>
+            <button type="button"  value="@certificate.id" class="btn btn-danger deleteButton"><span class="glyphicon glyphicon-remove"></span> Delete</button>
+        </td>
+    </tr>
+     }
+    </tbody>
+</table>
+<script>
+function refreshTable() {
+$.get("getCert", function(data, status){
+                $("#showCertificate").html(data)
+        });
+}
+
+  $(".deleteButton").click(function(){
+    var id = $(this).attr('value');
+    $("#showCertificate").html("")
+        $.ajax({     type : 'POST',
+                           url : "deleteCert/"+id,
+                           success: function (data) {
+                           $("#showCertificate").html(data)
+                refreshTable();
+            },
+            error: function (data, status) {
+                alert("Something Went Wrong");
+                refreshTable();
+            }
+                       });
+
+    });
+ $(".editButton").click(function(){
+ var id = $(this).attr('value');
+            $.get("getCert/"+id, function(data, status){
+                $("#name").val(data.name);
+                $("#year").val(parseInt(data.year));
+                $("#description").val(data.desc);
+                $("#id").val(parseInt(data.id));
+                $("#userId").val(parseInt(data.userId));
+        });
+
+        });
+
+</script>

@@ -12,6 +12,7 @@ import scala.concurrent.Future
 @ImplementedBy(classOf[ProgrammingServices])
 trait ProgrammingServiceApi{
 
+  def createProgrammingTable():Unit
   def insertProgramming(programmingLang:ProgrammingLanguages):Future[Int]
   def deleteProgramming(id:Int):Future[Int]
   def updateProgramming(programmingLang: ProgrammingLanguages):Future[Int]
@@ -40,4 +41,8 @@ class ProgrammingServices @Inject()(programmingRepo:ProgrammingLangRepository) e
     programmingRepo.deleteProgrammingLang(id)
   }
 
+  override def createProgrammingTable(): Unit = {
+
+    programmingRepo.createProgrammingTable()
+  }
 }

@@ -11,6 +11,7 @@ import scala.concurrent.Future
 @ImplementedBy(classOf[LanguageServices])
 trait LanguageServiceApi{
 
+  def createLanguageTable():Unit
   def insertLanguage(language:Languages):Future[Int]
   def deleteLanguage(id:Int):Future[Int]
   def updateLanguage(languages: Languages):Future[Int]
@@ -39,4 +40,8 @@ class LanguageServices @Inject()(langRepo:LanguageRepository) extends LanguageSe
     langRepo.getLanguageByUser(id)
   }
 
+  override def createLanguageTable(): Unit = {
+
+    langRepo.createLanguageTable()
+  }
 }

@@ -17,8 +17,9 @@ class UserRepository @Inject()(protected val dbConfigProvider: DatabaseConfigPro
   import driver.api._
 
   def creteTable():Unit = {
-
-    db.run(userTable.schema.create)
+    val createQuery = userTable.schema.create
+    println(createQuery.statements.head)
+    db.run(createQuery)
   }
 
   def getUser(email: String): Future[Option[User]] = {

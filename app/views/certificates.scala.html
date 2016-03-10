@@ -1,4 +1,4 @@
-@(certForm: Form[Certificates],isAdmin:Boolean,userId:String)(implicit session: play.api.mvc.Session,message: play.api.i18n.Messages)
+@(certForm: Form[Certificates],isAdmin:Boolean,userId:String)(implicit req: RequestHeader,message: play.api.i18n.Messages)
 @main("Certificates") {
 
 @if(certForm.hasErrors){
@@ -7,7 +7,7 @@ Test
 <p>@userId</p>
 
 <ul class="nav nav-pills nav-justified">
-    <li><a href="#"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+    <li><a href="/login"><span class="glyphicon glyphicon-home"></span> Home</a></li>
     <li class="active"><a href="#"><span class="glyphicon glyphicon-education"></span> Certificates</a></li>
     <li><a href="#"><span class="glyphicon glyphicon-comment"></span> Languages</a></li>
     <li><a href="#"><span class="glyphicon glyphicon-folder-open"></span> Assignments</a></li>

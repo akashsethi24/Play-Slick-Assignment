@@ -1,4 +1,4 @@
-@(loginForm : Form[(String,String)])(implicit message: play.api.i18n.Messages)
+@(loginForm : Form[(String,String)])(implicit message: play.api.i18n.Messages,req: RequestHeader)
 @main("Login") {
 
 <div class="container">

@@ -1,3 +1,4 @@
+addSbtPlugin("com.geirsson" %% "sbt-scalafmt" % "0.1.1")
 // The Play plugin
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.5.0")
 

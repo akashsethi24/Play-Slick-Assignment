@@ -10,53 +10,42 @@ import scala.concurrent.ExecutionContext.Implicits.global
   * Created by akash on 8/3/16.
   */
 @ImplementedBy(classOf[LoginService])
-trait LoginServiceApi  {
+trait LoginServiceApi {
+  def getUserByEmail(email: String, password: String): Future[Option[User]]
 
-  def getUserByEmail(email:String,password:String):Future[Option[User]]
+  def isUserAdmin(user: User): Boolean
 
-  def isUserAdmin(user:User):Boolean
-
-  def createUserTable():Unit
-
-
+  def createUserTable(): Unit
 }
 
-class LoginService @Inject()(userRepo:UserRepository) extends LoginServiceApi {
+class LoginService @Inject()(userRepo: UserRepository)
+    extends LoginServiceApi {
 
-  override def getUserByEmail(email:String,password:String):Future[Option[User]] = {
-
+  override def getUserByEmail(
+      email: String, password: String): Future[Option[User]] = {
     val user = userRepo.getUser(email)
-    user.map{users =>
-      if(users.isDefined) {
-        if(password == users.get.password)
-          {
-            users
-          }
-        else{
+    user.map { users =>
+      if (users.isDefined) {
+        if (password == users.get.password) {
+          users
+        } else {
           None
         }
-    }
-    else
-      {
+      } else {
         None
       }
     }
   }
 
-  override def isUserAdmin(user:User):Boolean = {
-
-    if(user.isAdmin) {
+  override def isUserAdmin(user: User): Boolean = {
+    if (user.isAdmin) {
       true
-    }
-    else {
+    } else {
       false
     }
   }
 
-  override def createUserTable():Unit = {
+  override def createUserTable(): Unit = {
     userRepo.creteTable()
   }
 }
-
-
-

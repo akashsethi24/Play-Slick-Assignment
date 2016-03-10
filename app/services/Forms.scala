@@ -10,51 +10,49 @@ import play.api.libs.functional.syntax._
   * Created by akash on 8/3/16.
   */
 object Forms {
-
   val loginForm = Form(
-    tuple(
-      "email"->email,
-      "password"->nonEmptyText
-    )
+      tuple(
+          "email" -> email,
+          "password" -> nonEmptyText
+      )
   )
 
-  val addCertificates = Form{
+  val addCertificates = Form {
     mapping(
-      "id" -> number,
-      "userId" -> number,
-      "name" -> nonEmptyText,
-      "description" -> nonEmptyText,
-      "year" -> number
+        "id" -> number,
+        "userId" -> number,
+        "name" -> nonEmptyText,
+        "description" -> nonEmptyText,
+        "year" -> number
     )(Certificates.apply)(Certificates.unapply)
   }
 
-  val addLanguages = Form{
+  val addLanguages = Form {
     mapping(
-      "id" -> number,
-      "userId" -> number,
-      "name" -> nonEmptyText,
-      "fluency" -> nonEmptyText
+        "id" -> number,
+        "userId" -> number,
+        "name" -> nonEmptyText,
+        "fluency" -> nonEmptyText
     )(Languages.apply)(Languages.unapply)
   }
 
-  val addAssignments = Form{
+  val addAssignments = Form {
     mapping(
-      "id" -> number,
-      "userId" -> number,
-      "name" -> nonEmptyText,
-      "date" -> nonEmptyText,
-      "remarks" -> nonEmptyText,
-      "marks" -> number
+        "id" -> number,
+        "userId" -> number,
+        "name" -> nonEmptyText,
+        "date" -> nonEmptyText,
+        "remarks" -> nonEmptyText,
+        "marks" -> number
     )(Assignments.apply)(Assignments.unapply)
   }
 
-  val addProgrammingLanguages = Form{
+  val addProgrammingLanguages = Form {
     mapping(
-      "id" -> number,
-      "userId" -> number,
-      "name" -> nonEmptyText,
-      "fluency" -> nonEmptyText
+        "id" -> number,
+        "userId" -> number,
+        "name" -> nonEmptyText,
+        "fluency" -> nonEmptyText
     )(ProgrammingLanguages.apply)(ProgrammingLanguages.unapply)
   }
-
 }

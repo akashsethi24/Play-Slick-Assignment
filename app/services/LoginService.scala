@@ -18,6 +18,7 @@ trait LoginServiceApi  {
 
   def createUserTable():Unit
 
+
 }
 
 class LoginService @Inject()(userRepo:UserRepository) extends LoginServiceApi {

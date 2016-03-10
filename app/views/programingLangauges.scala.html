@@ -11,28 +11,22 @@
 <hr>
 <div class="container" style="margin-top:20px;">
     <div class="row">
-        <h1>Languages</h1>
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Sr.No</th>
-                <th>Language</th>
-                <th>Fluency</th>
-                <th>Edit</th>
-                <th>Delete</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>1</td>
-                <td>Scala</td>
-                <td>Ultra Awesome</td>
-                <td><button type="button" class="btn btn-warning">Edit</button></td>
-                <td><button type="button" class="btn btn-danger">Delete</button></td>
-            </tr>
-            </tbody>
-        </table>
+        <h1>Programming Languages</h1>
+        <div id="showProgramming">
+
+        </div>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
 
+alert("hey");
+function refreshTable() {
+$.get("getProgramming", function(data, status){
+                $("#showProgramming").html(data)
+        });
+}
+refreshTable();
+});
+</script>
 }

@@ -27,6 +27,7 @@ class UserRepository @Inject()(protected val dbConfigProvider: DatabaseConfigPro
     db.run(userTable.filter(_.email === email).result.headOption)
 
   }
+
 }
 
 private[repo] trait UserTable  {

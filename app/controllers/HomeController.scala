@@ -17,8 +17,8 @@ import play.api.libs.json._
   * application's home page.
   */
 @Singleton
-class HomeController @Inject()(service: LoginServiceApi,certificateServices:CertificateServiceApi,
-                               languageService:LanguageServices,assignmentService:AssignmentServices,
+class HomeController @Inject()(service: LoginServiceApi, certificateServices: CertificateServiceApi,
+                               languageService: LanguageServices, assignmentService: AssignmentServices,
                                programmingService: ProgrammingServices
                               ) extends Controller {
 
@@ -51,10 +51,10 @@ class HomeController @Inject()(service: LoginServiceApi,certificateServices:Cert
         userInfo.map { user =>
           if (user.isDefined) {
             Redirect(routes.HomeController.index).
-              withSession("userId" -> (user.get.id.get).toString ,"email" -> user.get.email, "isAdmin" -> service.isUserAdmin(user.get).toString)
+              withSession("userId" -> (user.get.id.get).toString, "email" -> user.get.email, "isAdmin" -> service.isUserAdmin(user.get).toString)
           }
           else {
-            println("Invalid User"+userData+"::::"+user)
+            println("Invalid User" + userData + "::::" + user)
             Redirect(routes.HomeController.showLogin).flashing("error" -> "Invaild")
 
           }
@@ -64,10 +64,7 @@ class HomeController @Inject()(service: LoginServiceApi,certificateServices:Cert
   }
 
   def showCertificates = Action { implicit request =>
-    certificateServices.createCertificateTable
-    val userId = request.session.get("email").get
-    println(userId)
-    Ok(views.html.certificates(Forms.addCertificates,request.session.get("isAdmin").get.toBoolean, request.session.get("userId").get))
+    Ok(views.html.certificates(Forms.addCertificates, request.session.get("isAdmin").get.toBoolean, request.session.get("userId").get))
   }
 
   def addCertificate = Action.async { implicit request =>
@@ -90,11 +87,12 @@ class HomeController @Inject()(service: LoginServiceApi,certificateServices:Cert
     )
   }
 
-  def editCertificate = Action.async{implicit request =>
+  def editCertificate = Action.async { implicit request =>
 
 
     Forms.addCertificates.bindFromRequest.fold(
-      badForm => {  println(badForm)
+      badForm => {
+        println(badForm)
         val list = certificateServices.getCertificateByUser(1)
         list.map { listCert =>
           Ok(views.html.certificateTable(listCert)).as("text/html")
@@ -113,43 +111,100 @@ class HomeController @Inject()(service: LoginServiceApi,certificateServices:Cert
   }
 
   def ajaxCall = Action { implicit request =>
-        Ok("Ajax Call!")
-      }
+    Ok("Ajax Call!")
+  }
 
-  def getCertificateList = Action.async{
+  def getCertificateList = Action.async {
 
     val a = certificateServices.getCertificateByUser(1)
-    a.map{list =>
-    Ok(views.html.certificateTable(list)).as("text/html")
+    a.map { list =>
+      Ok(views.html.certificateTable(list)).as("text/html")
     }
   }
 
-  def getLanguageList = Action.async{
+  def getLanguageList = Action.async {
 
     val a = languageService.getLanguageByUser(1)
-    a.map{list =>
+    a.map { list =>
       Ok(views.html.languageTable(list)).as("text/html")
     }
   }
 
-  def getAssignmentList = Action.async{
+  def getAssignmentList = Action.async {
 
     val a = assignmentService.getAssignmentByUser(1)
-    a.map{list =>
+    a.map { list =>
       Ok(views.html.assignmentTable(list)).as("text/html")
     }
   }
 
-  def getProgrammingList = Action.async{
+  def getProgrammingList = Action.async {
 
     val a = programmingService.getProgrammingByUser(1)
-    a.map{list =>
+    a.map { list =>
       Ok(views.html.programmingTable(list)).as("text/html")
     }
   }
 
+  def addProgrammingLanguage = Action.async { implicit request =>
+
+    Forms.addProgrammingLanguages.bindFromRequest.fold(
+      badForm => {
+        val list = programmingService.getProgrammingByUser(1)
+        list.map { listProgLangauge =>
+          Ok(views.html.programmingTable(listProgLangauge)).as("text/html")
+        }
+
+      },
+      programmingData => {
+        programmingService.insertProgramming(programmingData).flatMap { r =>
+          programmingService.getProgrammingByUser(1).map { listProgLang =>
+            Ok(views.html.programmingTable(listProgLang))
+          }
+        }
+      }
+    )
+  }
+
+  def editProgramming = Action.async { implicit request =>
+
+
+    Forms.addProgrammingLanguages.bindFromRequest.fold(
+      badForm => {
+        println(badForm)
+        val list = programmingService.getProgrammingByUser(1)
+        list.map { listProgram =>
+          Ok(views.html.programmingTable(listProgram)).as("text/html")
+        }
+
+      },
+      programmingData => {
+        println(programmingData)
+        programmingService.updateProgramming(programmingData).flatMap { r =>
+          programmingService.getProgrammingByUser(1).map { listProgram =>
+            Ok(views.html.programmingTable(listProgram))
+          }
+        }
+      }
+    )
+  }
+
+  def getProgrammingById(id: Int) = Action.async {
+    val programming = programmingService.getProgrammingById(id)
+    programming.map { program =>
+
+      val jsonObj = Json.obj(
+        "id" -> program.get.id.toString,
+        "userId" -> program.get.userId.toString,
+        "name" -> program.get.name,
+        "skill" -> program.get.skillLevel
+      )
+      Ok(jsonObj)
+    }
+  }
+
+
   def showLanguages = Action { implicit request =>
-    languageService.createLanguageTable()
     Ok(views.html.language())
   }
 
@@ -160,14 +215,23 @@ class HomeController @Inject()(service: LoginServiceApi,certificateServices:Cert
 
   def showProgrammingLanguages = Action { implicit request =>
     programmingService.createProgrammingTable()
-    Ok(views.html.programingLangauges())
+    Ok(views.html.programingLangauges(Forms.addProgrammingLanguages, request.session.get("isAdmin").get.toBoolean, request.session.get("userId").get))
+  }
+
+  def deleteProgrammingLanguages(id: Int) = Action.async {
+
+    programmingService.deleteProgramming(id).flatMap { r =>
+      programmingService.getProgrammingByUser(1).map { listProg =>
+        Ok(views.html.programmingTable(listProg))
+      }
+    }
   }
 
   def showAdminPanel = Action { implicit request =>
     Ok(views.html.adminPanel())
   }
 
-  def deleteCertificate(id:Int) = Action.async{
+  def deleteCertificate(id: Int) = Action.async {
 
     certificateServices.deleteCertificate(id).flatMap { r =>
       certificateServices.getCertificateByUser(1).map { listCert =>
@@ -176,10 +240,10 @@ class HomeController @Inject()(service: LoginServiceApi,certificateServices:Cert
     }
   }
 
-  def getCertificateById(id:Int) = Action.async{
+  def getCertificateById(id: Int) = Action.async {
 
     val certificate = certificateServices.getById(id)
-    certificate.map{cert =>
+    certificate.map { cert =>
 
       val jsonObj = Json.obj(
         "id" -> cert.get.id.toString,
@@ -191,5 +255,5 @@ class HomeController @Inject()(service: LoginServiceApi,certificateServices:Cert
       Ok(jsonObj)
     }
 
-    }
+  }
 }

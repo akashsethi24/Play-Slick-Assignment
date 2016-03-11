@@ -1,14 +1,19 @@
-@()(implicit req: RequestHeader)
+@(isAdmin:Boolean)(implicit req: RequestHeader)
 @main("Admin Panel") {
 
-<ul class="nav nav-pills nav-justified">
-    <li><a href="#">Home</a></li>
-    <li><a href="#">Certificates</a></li>
-    <li><a href="#">Languages</a></li>
-    <li><a href="#">Assignments</a></li>
-    <li><a href="#">Programming Languages</a></li>
-    <li class="active"><a href="#">Admin Panel</a> </li>
+<ul class="nav nav-pills nav-justified navbar-collapse">
+    <li><a href="@routes.HomeController.showLogin"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+    <li><a href="@routes.HomeController.showCertificates"><span class="glyphicon glyphicon-education"></span> Certificates</a></li>
+    <li><a href="@routes.HomeController.showLanguages"><span class="glyphicon glyphicon-comment"></span> Languages</a></li>
+    <li><a href="@routes.HomeController.showAssignments"><span class="glyphicon glyphicon-folder-open"></span> Assignments</a></li>
+    <li><a href="@routes.HomeController.showProgrammingLanguages"><span class="glyphicon glyphicon-floppy-disk"></span> Programming</a></li>
+    @if(isAdmin){
+    <li class="active"><a href="#"><span class="glyphicon glyphicon-warning-sign"></span> Admin Panel</a></li>
+    <li><a href="@routes.HomeController.logout"><span class="glyphicon glyphicon-warning-sign"></span>Logout</a></li>
+    }
 </ul>
+
+
 <hr>
 <div class="container" style="margin-top:20px;">
     <div class="row">

@@ -349,7 +349,7 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
 
   def showAdminPanel = Action { implicit request =>
     if(request.session.get("isAdmin").isDefined && request.session.get("isAdmin").get.toBoolean) {
-      Ok(views.html.adminPanel())
+      Ok(views.html.adminPanel(request.session.get("isAdmin").get.toBoolean))
     }
     else{
       Redirect(routes.HomeController.index)

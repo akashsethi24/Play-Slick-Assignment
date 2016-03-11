@@ -10,6 +10,7 @@ import play.api.libs.concurrent.Execution.Implicits._
 import play.api.i18n.Messages.Implicits._
 import play.api.Play.current
 import scala.concurrent.Future
+import services._
 
 /**
   * This controller creates an `Action` to handle HTTP requests to the
@@ -17,8 +18,8 @@ import scala.concurrent.Future
   */
 @Singleton
 class HomeController @Inject()(service: LoginServiceApi, certificateServices: CertificateServiceApi,
-                               languageService: LanguageServices, assignmentService: AssignmentServices,
-                               programmingService: ProgrammingServices
+                               languageService: LanguageServiceApi, assignmentService: AssignmentServiceApi,
+                               programmingService: ProgrammingServiceApi
                               ) extends Controller {
 
   /**
@@ -58,7 +59,6 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
   def processLoginForm = Action.async { implicit request =>
     Forms.loginForm.bindFromRequest.fold(
       badForm => {
-        println(badForm)
         Future {
           BadRequest(views.html.login(badForm))
         }
@@ -71,7 +71,6 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
               withSession("userId" -> (user.get.id.get).toString, "email" -> user.get.email, "isAdmin" -> service.isUserAdmin(user.get).toString)
           }
           else {
-            println("Invalid User" + userData + "::::" + user)
             Redirect(routes.HomeController.showLogin).flashing("error" -> "Invaild")
 
           }
@@ -134,7 +133,6 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
 
     Forms.addCertificates.bindFromRequest.fold(
       badForm => {
-        println(badForm)
         val list = certificateServices.getCertificateByUser(request.session.get("userId").get.toInt)
         list.map { listCert =>
           Ok(views.html.certificateTable(listCert)).as("text/html")
@@ -142,7 +140,6 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
 
       },
       certificateData => {
-        println(certificateData)
         certificateServices.updateCertificate(certificateData).flatMap { r =>
           certificateServices.getCertificateByUser(request.session.get("userId").get.toInt).map { listCert =>
             Ok(views.html.certificateTable(listCert))
@@ -157,7 +154,6 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
 
     Forms.addLanguages.bindFromRequest.fold(
       badForm => {
-        println(badForm)
         val list = languageService.getLanguageByUser(request.session.get("userId").get.toInt)
         list.map { listLang =>
           Ok(views.html.languageTable(listLang)).as("text/html")
@@ -165,7 +161,6 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
 
       },
       languageData => {
-        println(languageData)
         languageService.updateLanguage(languageData).flatMap { r =>
           languageService.getLanguageByUser(request.session.get("userId").get.toInt).map { listLang =>
             Ok(views.html.languageTable(listLang))
@@ -256,7 +251,6 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
 
     Forms.addProgrammingLanguages.bindFromRequest.fold(
       badForm => {
-        println(badForm)
         val list = programmingService.getProgrammingByUser(request.session.get("userId").get.toInt)
         list.map { listProgram =>
           Ok(views.html.programmingTable(listProgram)).as("text/html")
@@ -264,7 +258,6 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
 
       },
       programmingData => {
-        println(programmingData)
         programmingService.updateProgramming(programmingData).flatMap { r =>
           programmingService.getProgrammingByUser(request.session.get("userId").get.toInt).map { listProgram =>
             Ok(views.html.programmingTable(listProgram))

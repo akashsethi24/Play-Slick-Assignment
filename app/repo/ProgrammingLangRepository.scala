@@ -16,8 +16,9 @@ class ProgrammingLangRepository @Inject()(
 
   import driver.api._
 
-  def createProgrammingTable(): Unit = {
+  def createProgrammingTable(): Boolean = {
     db.run(programmingLangTable.schema.create)
+    true
   }
 
   def insertProgrammingLang(

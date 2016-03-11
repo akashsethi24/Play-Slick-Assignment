@@ -37,10 +37,8 @@ class HomeControllerSpec extends Specification with Mockito {
 
     "Show the Home Page" in new WithApplication {
       val result = controller.index()
-      val home = route(FakeRequest(GET, "/")).get
-      status(home) must equalTo(OK)
-      contentType(home) must beSome.which(_ == "text/html")
-      contentAsString(home) must contain ("Welcome")
+      val home = route(FakeRequest(GET, "/").withSession("email" ->"Akash@gmail.com","isAdmin"->"true","userId"->"1")).get
+      status(home) must equalTo(SEE_OTHER)
     }
 
     "Show the Login Page" in new WithApplication {

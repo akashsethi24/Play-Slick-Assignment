@@ -93,7 +93,7 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
 
     Forms.addLanguages.bindFromRequest.fold(
       badForm => {
-        val list = languageService.getLanguageByUser(1)
+        val list = languageService.getLanguageByUser(request.session.get("userId").get.toInt)
         list.map { listLang =>
           Ok(views.html.languageTable(listLang)).as("text/html")
         }
@@ -113,7 +113,7 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
 
     Forms.addCertificates.bindFromRequest.fold(
       badForm => {
-        val list = certificateServices.getCertificateByUser(1)
+        val list = certificateServices.getCertificateByUser(request.session.get("userId").get.toInt)
         list.map { listCert =>
           Ok(views.html.certificateTable(listCert)).as("text/html")
         }
@@ -121,7 +121,7 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
       },
       certificateData => {
         certificateServices.insertCertificate(certificateData).flatMap { r =>
-          certificateServices.getCertificateByUser(1).map { listCert =>
+          certificateServices.getCertificateByUser(request.session.get("userId").get.toInt).map { listCert =>
             Ok(views.html.certificateTable(listCert))
           }
         }
@@ -135,7 +135,7 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
     Forms.addCertificates.bindFromRequest.fold(
       badForm => {
         println(badForm)
-        val list = certificateServices.getCertificateByUser(1)
+        val list = certificateServices.getCertificateByUser(request.session.get("userId").get.toInt)
         list.map { listCert =>
           Ok(views.html.certificateTable(listCert)).as("text/html")
         }
@@ -144,7 +144,7 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
       certificateData => {
         println(certificateData)
         certificateServices.updateCertificate(certificateData).flatMap { r =>
-          certificateServices.getCertificateByUser(1).map { listCert =>
+          certificateServices.getCertificateByUser(request.session.get("userId").get.toInt).map { listCert =>
             Ok(views.html.certificateTable(listCert))
           }
         }
@@ -158,7 +158,7 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
     Forms.addLanguages.bindFromRequest.fold(
       badForm => {
         println(badForm)
-        val list = languageService.getLanguageByUser(1)
+        val list = languageService.getLanguageByUser(request.session.get("userId").get.toInt)
         list.map { listLang =>
           Ok(views.html.languageTable(listLang)).as("text/html")
         }
@@ -167,7 +167,7 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
       languageData => {
         println(languageData)
         languageService.updateLanguage(languageData).flatMap { r =>
-          languageService.getLanguageByUser(1).map { listLang =>
+          languageService.getLanguageByUser(request.session.get("userId").get.toInt).map { listLang =>
             Ok(views.html.languageTable(listLang))
           }
         }
@@ -175,35 +175,59 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
     )
   }
 
-  def getCertificateList = Action.async {
+  def getCertificateList = Action.async { implicit request =>
 
-    val a = certificateServices.getCertificateByUser(1)
+    val a = certificateServices.getCertificateByUser(request.session.get("userId").get.toInt)
     a.map { list =>
       Ok(views.html.certificateTable(list)).as("text/html")
     }
   }
 
-  def getLanguageList = Action.async {
+  def getCertificateListByUser(id:Int) = Action.async { implicit request =>
 
-    val a = languageService.getLanguageByUser(1)
+    val a = certificateServices.getCertificateByUser(id)
+    a.map { list =>
+      Ok(views.html.certificateTableAdmin(list)).as("text/html")
+    }
+  }
+
+  def getLanguageList = Action.async { implicit request =>
+
+    val a = languageService.getLanguageByUser(request.session.get("userId").get.toInt)
     a.map { list =>
       Ok(views.html.languageTable(list)).as("text/html")
     }
   }
 
-  def getAssignmentList = Action.async {
+  def getLanguageListByUser(id:Int) = Action.async { implicit request =>
 
-    val a = assignmentService.getAssignmentByUser(1)
+    val a = languageService.getLanguageByUser(id)
+    a.map { list =>
+      Ok(views.html.languageTableAdmin(list)).as("text/html")
+    }
+  }
+
+  def getAssignmentList = Action.async { implicit request =>
+
+    val a = assignmentService.getAssignmentByUser(request.session.get("userId").get.toInt)
     a.map { list =>
       Ok(views.html.assignmentTable(list)).as("text/html")
     }
   }
 
-  def getProgrammingList = Action.async {
+  def getProgrammingList = Action.async { implicit request =>
 
-    val a = programmingService.getProgrammingByUser(1)
+    val a = programmingService.getProgrammingByUser(request.session.get("userId").get.toInt)
     a.map { list =>
       Ok(views.html.programmingTable(list)).as("text/html")
+    }
+  }
+
+  def getProgrammingListByUser(id:Int) = Action.async { implicit request =>
+
+    val a = programmingService.getProgrammingByUser(id)
+    a.map { list =>
+      Ok(views.html.programmingTableAdmin(list)).as("text/html")
     }
   }
 
@@ -211,7 +235,7 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
 
     Forms.addProgrammingLanguages.bindFromRequest.fold(
       badForm => {
-        val list = programmingService.getProgrammingByUser(1)
+        val list = programmingService.getProgrammingByUser(request.session.get("userId").get.toInt)
         list.map { listProgLangauge =>
           Ok(views.html.programmingTable(listProgLangauge)).as("text/html")
         }
@@ -219,7 +243,7 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
       },
       programmingData => {
         programmingService.insertProgramming(programmingData).flatMap { r =>
-          programmingService.getProgrammingByUser(1).map { listProgLang =>
+          programmingService.getProgrammingByUser(request.session.get("userId").get.toInt).map { listProgLang =>
             Ok(views.html.programmingTable(listProgLang))
           }
         }
@@ -233,7 +257,7 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
     Forms.addProgrammingLanguages.bindFromRequest.fold(
       badForm => {
         println(badForm)
-        val list = programmingService.getProgrammingByUser(1)
+        val list = programmingService.getProgrammingByUser(request.session.get("userId").get.toInt)
         list.map { listProgram =>
           Ok(views.html.programmingTable(listProgram)).as("text/html")
         }
@@ -242,7 +266,7 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
       programmingData => {
         println(programmingData)
         programmingService.updateProgramming(programmingData).flatMap { r =>
-          programmingService.getProgrammingByUser(1).map { listProgram =>
+          programmingService.getProgrammingByUser(request.session.get("userId").get.toInt).map { listProgram =>
             Ok(views.html.programmingTable(listProgram))
           }
         }
@@ -306,18 +330,18 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
     }
   }
 
-  def deleteProgrammingLanguages(id: Int) = Action.async {
+  def deleteProgrammingLanguages(id: Int) = Action.async { implicit request =>
 
     programmingService.deleteProgramming(id).flatMap { r =>
-      programmingService.getProgrammingByUser(1).map { listProg =>
+      programmingService.getProgrammingByUser(request.session.get("userId").get.toInt).map { listProg =>
         Ok(views.html.programmingTable(listProg))
       }
     }
   }
 
-  def deleteLanguages(id: Int) = Action.async {
+  def deleteLanguages(id: Int) = Action.async { implicit request =>
     languageService.deleteLanguage(id).flatMap { r =>
-      languageService.getLanguageByUser(1).map { listLang =>
+      languageService.getLanguageByUser(request.session.get("userId").get.toInt).map { listLang =>
         Ok(views.html.languageTable(listLang))
       }
     }
@@ -332,10 +356,10 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
     }
   }
 
-  def deleteCertificate(id: Int) = Action.async {
+  def deleteCertificate(id: Int) = Action.async { implicit request =>
 
     certificateServices.deleteCertificate(id).flatMap { r =>
-      certificateServices.getCertificateByUser(1).map { listCert =>
+      certificateServices.getCertificateByUser(request.session.get("userId").get.toInt).map { listCert =>
         Ok(views.html.certificateTable(listCert))
       }
     }
@@ -356,5 +380,13 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
       Ok(jsonObj)
     }
 
+  }
+
+  def getAllUser = Action.async{
+
+    val listofUser = service.getAllUsers()
+    listofUser.map{list =>
+      Ok(views.html.userTable(list))
+    }
   }
 }

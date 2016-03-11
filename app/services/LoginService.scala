@@ -16,6 +16,8 @@ trait LoginServiceApi {
   def isUserAdmin(user: User): Boolean
 
   def createUserTable(): Unit
+
+  def getAllUsers():Future[List[User]]
 }
 
 class LoginService @Inject()(userRepo: UserRepository)
@@ -47,5 +49,9 @@ class LoginService @Inject()(userRepo: UserRepository)
 
   override def createUserTable(): Unit = {
     userRepo.creteTable()
+  }
+
+  override def getAllUsers(): Future[List[User]] = {
+    userRepo.getAllUser()
   }
 }

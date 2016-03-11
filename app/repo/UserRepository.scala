@@ -25,6 +25,11 @@ class UserRepository @Inject()(
   def getUser(email: String): Future[Option[User]] = {
     db.run(userTable.filter(_.email === email).result.headOption)
   }
+
+  def getAllUser():Future[List[User]] ={
+
+    db.run(userTable.to[List].result)
+  }
 }
 
 private [repo] trait UserTable {

@@ -9,6 +9,10 @@ GET     /certificates                           controllers.HomeController.showC
 GET     /languages                           controllers.HomeController.showLanguages
 GET     /assignments                           controllers.HomeController.showAssignments
 GET     /programming                           controllers.HomeController.showProgrammingLanguages
+GET     /getcertbyuser/:id                          controllers.HomeController.getCertificateListByUser(id:Int)
+GET     /getlangbyuser/:id                          controllers.HomeController.getLanguageListByUser(id:Int)
+GET     /getprogbyuser/:id                          controllers.HomeController.getProgrammingListByUser(id:Int)
+GET     /getuser                                    controllers.HomeController.getAllUser
 GET     /adminpanel                           controllers.HomeController.showAdminPanel
 POST    /loginsubmit                            controllers.HomeController.processLoginForm
 POST    /addcertificates                            controllers.HomeController.addCertificate
@@ -24,7 +28,6 @@ GET     /getProgramming                             controllers.HomeController.g
 POST     /deleteprog/:id                                 controllers.HomeController.deleteProgrammingLanguages(id:Int)
 GET     /logout                                 controllers.HomeController.logout
 POST     /deletelang/:id                                 controllers.HomeController.deleteLanguages(id:Int)
-
 POST     /deleteCert/:id                                 controllers.HomeController.deleteCertificate(id:Int)
 GET     /getCert/:id                                     controllers.HomeController.getCertificateById(id:Int)
 POST    /editCertificate                                    controllers.HomeController.editCertificate

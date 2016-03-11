@@ -4,62 +4,14 @@
     <tr>
         <th>Name</th>
         <th>Fluency</th>
-        <th>Edit</th>
-        <th>Delete</th>
     </tr>
     </thead>
     <tbody>
     @list.map{ lang =>
     <tr>
-        <td>@lang</td>
+        <td>@lang.name</td>
         <td>@lang.fluency</td>
-        <td>
-            <button type="button" class="btn btn-warning editButton" value="@lang.id" data-toggle="modal"
-                    data-target="#languageEditModal">
-                <span class="glyphicon glyphicon-pencil"></span> Edit
-            </button>
-        </td>
-        <td>
-            <button type="button" id="deleteLanguage" value="@lang.id" class="btn btn-danger deleteButton"><span class="glyphicon glyphicon-remove"></span> Delete</button>
-        </td>
     </tr>
     }
     </tbody>
 </table>
-<script>
-function refreshTable() {
-$.get("getLang", function(data, status){
-                $("#showLanguage").html(data)
-        });
-}
-
-  $(".deleteButton").click(function(){
-    var id = $(this).attr('value');
-
-    $("#showLanguage").html("")
-        $.ajax({     type : 'POST',
-                           url : "deletelang/"+id,
-                           success: function (data) {
-                           $("#showLanguage").html(data)
-                refreshTable();
-            },
-            error: function (data, status) {
-                alert("Something Went Wrong");
-                refreshTable();
-            }
-                       });
-
-    });
-
- $(".editButton").click(function(){
- var id = $(this).attr('value');
-            $.get("getlang/"+id, function(data, status){
-                $("#name").val(data.name);
-                $("#id").val(parseInt(data.id));
-                $("#userId").val(parseInt(data.userId));
-                $("#fluency").val(data.fluency);
-        });
-
-        });
-
-</script>

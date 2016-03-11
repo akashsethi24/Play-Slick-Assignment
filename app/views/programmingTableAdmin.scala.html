@@ -4,8 +4,6 @@
     <tr>
         <th>Name</th>
         <th>Skill</th>
-        <th>Edit</th>
-        <th>Delete</th>
     </tr>
     </thead>
     <tbody>
@@ -13,52 +11,7 @@
     <tr>
         <td>@lang.name</td>
         <td>@lang.skillLevel</td>
-        <td>
-            <button type="button" class="btn btn-warning editButton" value="@lang.id" data-toggle="modal"
-                    data-target="#programmingEditModal">
-                <span class="glyphicon glyphicon-pencil"></span> Edit
-            </button>
-        </td>
-        <td>
-            <button type="button" id="deleteProgramming" value="@lang.id" class="btn btn-danger deleteButton"><span class="glyphicon glyphicon-remove"></span> Delete</button>
-        </td>
     </tr>
     }
     </tbody>
 </table>
-
-<script>
-function refreshTable() {
-$.get("getprogramming", function(data, status){
-                $("#showProgramming").html(data)
-        });
-}
-
-  $(".deleteButton").click(function(){
-    var id = $(this).attr('value');
-    $("#showProgramming").html("")
-        $.ajax({     type : 'POST',
-                           url : "deleteprog/"+id,
-                           success: function (data) {
-                           $("#showProgramming").html(data)
-                refreshTable();
-            },
-            error: function (data, status) {
-                alert("Something Went Wrong");
-                refreshTable();
-            }
-                       });
-
-    });
- $(".editButton").click(function(){
- var id = $(this).attr('value');
-            $.get("getprog/"+id, function(data, status){
-                $("#name").val(data.name);
-                $("#id").val(parseInt(data.id));
-                $("#userId").val(parseInt(data.userId));
-                $("#fluency").val(data.skill);
-        });
-
-        });
-
-</script>

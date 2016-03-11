@@ -39,12 +39,17 @@ class LanguageRepository @Inject()(
   }
 
   def getLanguageByUser(id: Int): Future[List[Languages]] = {
-    val getCertificate = for {
-      language <- languageTable if language.userId === id
-    } yield language
+    val getCertificate = languageTable.filter(_.userId === id)
     val getAction = db.run(getCertificate.to[List].result)
     getAction
   }
+
+  def getById(id: Int): Future[Option[Languages]] = {
+
+    db.run(languageTable.filter(_.id === id).result.headOption)
+  }
+
+
 }
 
 private [repo] trait LanguageTable {

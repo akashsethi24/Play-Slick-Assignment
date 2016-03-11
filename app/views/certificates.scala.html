@@ -1,10 +1,6 @@
 @(certForm: Form[Certificates],isAdmin:Boolean,userId:String)(implicit req: RequestHeader,message: play.api.i18n.Messages)
 @main("Certificates") {
 
-@if(certForm.hasErrors){
-Test
-}
-<p>@userId</p>
 
 <ul class="nav nav-pills nav-justified">
     <li><a href="/login"><span class="glyphicon glyphicon-home"></span> Home</a></li>

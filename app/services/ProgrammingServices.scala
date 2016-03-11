@@ -10,12 +10,14 @@ import scala.concurrent.Future
   * Created by akash on 9/3/16.
   */
 @ImplementedBy(classOf[ProgrammingServices])
-trait ProgrammingServiceApi {
-  def createProgrammingTable(): Boolean
-  def insertProgramming(programmingLang: ProgrammingLanguages): Future[Int]
-  def deleteProgramming(id: Int): Future[Int]
-  def updateProgramming(programmingLang: ProgrammingLanguages): Future[Int]
-  def getProgrammingByUser(id: Int): Future[List[ProgrammingLanguages]]
+trait ProgrammingServiceApi{
+
+  def createProgrammingTable():Unit
+  def insertProgramming(programmingLang:ProgrammingLanguages):Future[Int]
+  def deleteProgramming(id:Int):Future[Int]
+  def updateProgramming(programmingLang: ProgrammingLanguages):Future[Int]
+  def getProgrammingByUser(id:Int):Future[List[ProgrammingLanguages]]
+  def getProgrammingById(id:Int):Future[Option[ProgrammingLanguages]]
 }
 
 class ProgrammingServices @Inject()(programmingRepo: ProgrammingLangRepository)
@@ -40,7 +42,11 @@ class ProgrammingServices @Inject()(programmingRepo: ProgrammingLangRepository)
     programmingRepo.deleteProgrammingLang(id)
   }
 
-  override def createProgrammingTable(): Boolean = {
+  override def createProgrammingTable(): Unit = {
     programmingRepo.createProgrammingTable()
+  }
+
+  override def getProgrammingById(id:Int):Future[Option[ProgrammingLanguages]] ={
+    programmingRepo.getProgrammingById(id)
   }
 }

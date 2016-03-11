@@ -3,14 +3,13 @@ package controllers
 import javax.inject._
 
 import play.api.libs.concurrent.Execution.Implicits._
-import play.api.libs.json.{JsString, Json}
+import play.api.libs.json.Json
 import play.api.mvc._
 import services._
 import play.api.libs.concurrent.Execution.Implicits._
 import play.api.i18n.Messages.Implicits._
 import play.api.Play.current
 import scala.concurrent.Future
-import play.api.libs.json._
 
 /**
   * This controller creates an `Action` to handle HTTP requests to the
@@ -30,7 +29,12 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
     */
 
   def index = Action { implicit request =>
-    Ok(views.html.index("Random@Some.com"))
+    if(request.session.get("email").isDefined){
+      Redirect(routes.HomeController.index)
+    }
+    else {
+      Ok(views.html.index("Random@Some.com"))
+    }
   }
 
   def showLogin = Action { implicit request =>
@@ -65,6 +69,26 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
 
   def showCertificates = Action { implicit request =>
     Ok(views.html.certificates(Forms.addCertificates, request.session.get("isAdmin").get.toBoolean, request.session.get("userId").get))
+  }
+
+  def addLanguage = Action.async { implicit request =>
+
+    Forms.addLanguages.bindFromRequest.fold(
+      badForm => {
+        val list = languageService.getLanguageByUser(1)
+        list.map { listLang =>
+          Ok(views.html.languageTable(listLang)).as("text/html")
+        }
+
+      },
+      languageData => {
+        languageService.insertLanguage(languageData).flatMap { r =>
+          languageService.getLanguageByUser(1).map { listLang =>
+            Ok(views.html.languageTable(listLang))
+          }
+        }
+      }
+    )
   }
 
   def addCertificate = Action.async { implicit request =>
@@ -110,8 +134,27 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
     )
   }
 
-  def ajaxCall = Action { implicit request =>
-    Ok("Ajax Call!")
+  def editLanguage = Action.async { implicit request =>
+
+
+    Forms.addLanguages.bindFromRequest.fold(
+      badForm => {
+        println(badForm)
+        val list = languageService.getLanguageByUser(1)
+        list.map { listLang =>
+          Ok(views.html.languageTable(listLang)).as("text/html")
+        }
+
+      },
+      languageData => {
+        println(languageData)
+        languageService.updateLanguage(languageData).flatMap { r =>
+          languageService.getLanguageByUser(1).map { listLang =>
+            Ok(views.html.languageTable(listLang))
+          }
+        }
+      }
+    )
   }
 
   def getCertificateList = Action.async {
@@ -203,9 +246,23 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
     }
   }
 
+  def getLanguageById(id: Int) = Action.async {
+    val language = languageService.getLanguageById(id)
+    language.map { program =>
+      val jsonObj = Json.obj(
+        "id" -> program.get.id.toString,
+        "userId" -> program.get.userId.toString,
+        "name" -> program.get.name,
+        "fluency" -> program.get.fluency
+      )
+      Ok(jsonObj)
+    }
+  }
+
+
 
   def showLanguages = Action { implicit request =>
-    Ok(views.html.language())
+    Ok(views.html.language(Forms.addLanguages, request.session.get("isAdmin").get.toBoolean, request.session.get("userId").get))
   }
 
   def showAssignments = Action { implicit request =>
@@ -223,6 +280,14 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
     programmingService.deleteProgramming(id).flatMap { r =>
       programmingService.getProgrammingByUser(1).map { listProg =>
         Ok(views.html.programmingTable(listProg))
+      }
+    }
+  }
+
+  def deleteLanguages(id: Int) = Action.async {
+    languageService.deleteLanguage(id).flatMap { r =>
+      languageService.getLanguageByUser(1).map { listLang =>
+        Ok(views.html.languageTable(listLang))
       }
     }
   }

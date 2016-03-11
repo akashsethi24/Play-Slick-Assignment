@@ -13,6 +13,7 @@ import scala.concurrent.Future
 class ProgrammingLangRepository @Inject()(
     protected val dbConfigProvider: DatabaseConfigProvider)
     extends HasDatabaseConfigProvider[JdbcProfile] with ProgrammingLangTable {
+
   import driver.api._
 
   def createProgrammingTable(): Unit = {
@@ -20,7 +21,7 @@ class ProgrammingLangRepository @Inject()(
   }
 
   def insertProgrammingLang(
-      programmingLang: ProgrammingLanguages): Future[Int] = {
+                             programmingLang: ProgrammingLanguages): Future[Int] = {
     val insertAction =
       programmingLangTable
         .returning(programmingLangTable.map(_.id)) += programmingLang
@@ -33,7 +34,7 @@ class ProgrammingLangRepository @Inject()(
   }
 
   def updateProgrammingLang(
-      programmingLang: ProgrammingLanguages): Future[Int] = {
+                             programmingLang: ProgrammingLanguages): Future[Int] = {
     val updateCertificate = for {
       language <- programmingLangTable if language.id === programmingLang.id
     } yield language
@@ -48,25 +49,34 @@ class ProgrammingLangRepository @Inject()(
     val getAction = db.run(getCertificate.to[List].result)
     getAction
   }
-}
 
-private [repo] trait ProgrammingLangTable {
-  self: HasDatabaseConfigProvider[JdbcProfile] =>
 
-  import driver.api._
+  def getProgrammingById(id: Int): Future[Option[ProgrammingLanguages]] = {
 
-  protected val programmingLangTable = TableQuery[ProgrammingLangTable]
-
-  protected class ProgrammingLangTable(tag: Tag)
-      extends Table[ProgrammingLanguages](tag, "programmingLang") {
-    val id = column[Int]("id", O.PrimaryKey, O.AutoInc)
-
-    val userId = column[Int]("user_id")
-    val name = column[String]("name", O.SqlType("VARCHAR(30)"))
-    val skillLevel = column[String]("skill_level", O.SqlType("VARCHAR(20)"))
-
-    def * =
-      (id, userId, name, skillLevel) <>
-      (ProgrammingLanguages.tupled, ProgrammingLanguages.unapply)
+    db.run(programmingLangTable.filter(_.id === id).result.headOption)
   }
+
 }
+
+  private[repo] trait ProgrammingLangTable {
+    self: HasDatabaseConfigProvider[JdbcProfile] =>
+
+    import driver.api._
+
+    protected val programmingLangTable = TableQuery[ProgrammingLangTable]
+
+    protected class ProgrammingLangTable(tag: Tag) extends Table[ProgrammingLanguages](tag, "programminglang") {
+
+      val id = column[Int]("id", O.PrimaryKey, O.AutoInc)
+
+      val userId = column[Int]("user_id")
+      val name = column[String]("name", O.SqlType("VARCHAR(30)"))
+      val skillLevel = column[String]("skill_level", O.SqlType("VARCHAR(20)"))
+
+      def * =
+        (id, userId, name, skillLevel) <>
+          (ProgrammingLanguages.tupled, ProgrammingLanguages.unapply)
+    }
+
+  }
+

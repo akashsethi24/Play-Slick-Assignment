@@ -1,32 +1,150 @@
-@()(implicit req: RequestHeader)
+@(langForm: Form[ProgrammingLanguages],isAdmin:Boolean,userId:String)(implicit req: RequestHeader,message: play.api.i18n.Messages)
 @main("Programming Languages") {
 
 <ul class="nav nav-pills nav-justified">
-    <li><a href="#">Home</a></li>
-    <li><a href="#">Certificates</a></li>
-    <li><a href="#">Languages</a></li>
-    <li><a href="#">Assignments</a></li>
-    <li class="active"><a href="#">Programming Languages</a></li>
+    <li><a href="/login"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+    <li><a href="#"><span class="glyphicon glyphicon-education"></span> Certificates</a></li>
+    <li><a href="#"><span class="glyphicon glyphicon-comment"></span> Languages</a></li>
+    <li><a href="#"><span class="glyphicon glyphicon-folder-open"></span> Assignments</a></li>
+    <li class="active"><a href="#"><span class="glyphicon glyphicon-floppy-disk"></span> Programming Languages</a></li>
+    @if(isAdmin){
+    <li><a href="#"><span class="glyphicon glyphicon-warning-sign"></span> Admin Panel</a></li>
+    }
 </ul>
 <hr>
 <div class="container" style="margin-top:20px;">
     <div class="row">
-        <h1>Programming Languages</h1>
-        <div id="showProgramming">
-
+        <div class="col-md-12" style="margin-bottom:15px;">
+            <div class="col-md-6">
+                <h1>Programming Languages</h1>
+            </div>
+            <div class="col-md-6" style="margin-top:25px;">
+                <button type="button" class="btn btn-success btn-lg" data-toggle="modal"
+                        data-target="#languageAddModal">
+                    <span class="glyphicon glyphicon-plus"></span> Add New Programming Language
+            </div>
         </div>
+    </div>
+    <div id="showProgramming">
+
+    </div>
+</div>
+</div>
+
+<!-- Modal -->
+<div id="programmingEditModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Certificate</h4>
+            </div>
+            <div class="modal-body">
+                @helper.form(action = routes.HomeController.addProgrammingLanguage,'id->"editForm") {
+                @helper.inputText(langForm("id").copy(value = Some("1")),'style->"display:None",'type->"hidden",'class
+                -> "form-control",'_showConstraints->false,'_label->"")
+                @helper.inputText(langForm("userId").copy(value = Some(userId)),'type->"text",'readonly->true,'class ->
+                "form-control",'_showConstraints->false,'_label->"User Id")
+                @helper.inputText(langForm("name"),'type->"text",'class ->
+                "form-control",'_label->"Name:",'required->true,'_help->"Required")
+                @helper.inputText(langForm("fluency"),'type->"text",'class ->
+                "form-control",'_label->"Skill:",'required->true,'_help->"Required")
+                <button type="submit" id="editProgLang" class="btn btn-primary">Edit</button>
+                }
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div id="languageAddModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add New Certificate</h4>
+            </div>
+            <div class="modal-body">
+                @helper.form(action = routes.HomeController.addProgrammingLanguage,'id->"addProgLangForm") {
+                @helper.inputText(langForm("id").copy(value = Some("1")),'style->"display:None",'type->"hidden",'class
+                -> "form-control",'_showConstraints->false,'_label->"")
+                @helper.inputText(langForm("userId").copy(value = Some(userId)),'type->"text",'readonly->true,'class ->
+                "form-control",'_showConstraints->false,'_label->"User Id")
+                @helper.inputText(langForm("name"),'type->"text",'class ->
+                "form-control",'_label->"Name:",'required->true,'_help->"Required")
+                @helper.inputText(langForm("fluency"),'type->"text",'class ->
+                "form-control",'_label->"Skill:",'required->true,'_help->"Required")
+                <button type="submit" id="addProgLang" class="btn btn-primary">Add</button>
+                }
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
     </div>
 </div>
 <script>
     $(document).ready(function(){
+        function refreshTable() {
+        $.get("getProgramming", function(data, status){
+                        $("#showProgramming").html(data)
+                });
+        }
+        refreshTable();
 
-alert("hey");
-function refreshTable() {
-$.get("getProgramming", function(data, status){
-                $("#showProgramming").html(data)
+        $("#addProgLangForm").submit(function(event) {
+
+    event.preventDefault();
+
+    $("#showProgramming").html('');
+    var values = $(this).serialize();
+         $.ajax({
+            url: "addproglang ",
+            type: "post",
+            data: values,
+            success: function (data) {
+                $("#languageAddModal").modal('hide');
+                $("#showProgramming").html(data);
+            }
         });
-}
-refreshTable();
-});
+
+     });
+
+     $("#editForm").submit(function(event) {
+    event.preventDefault();
+    $("#showProgramming").html('');
+    var values = $(this).serialize();
+    console.log(values);
+         $.ajax({
+            url: "editprogramming",
+            type: "post",
+            data: values,
+            success: function (data) {
+                $("#programmingEditModal").modal('hide');
+                $("#showProgramming").html(data);
+            },
+            error: function(data,status){
+            console.log(status);
+            }
+        });
+
+     });
+
+    });
+
+
+
 </script>
 }

@@ -23,4 +23,4 @@ case class Assignments(id: Int,
                        marks: Int)
 
 case class ProgrammingLanguages(
-    id: Int, userId: Int, name: String, fluency: String)
+    id: Int, userId: Int, name: String, skillLevel: String)

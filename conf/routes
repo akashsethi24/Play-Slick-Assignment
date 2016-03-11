@@ -12,14 +12,24 @@ GET     /programming                           controllers.HomeController.showPr
 GET     /adminpanel                           controllers.HomeController.showAdminPanel
 POST    /loginsubmit                            controllers.HomeController.processLoginForm
 POST    /addcertificates                            controllers.HomeController.addCertificate
+POST    /addproglang                            controllers.HomeController.addProgrammingLanguage
+POST    /addlang                            controllers.HomeController.addLanguage
 GET     /getCert                                controllers.HomeController.getCertificateList
+GET     /getprog/:id                                     controllers.HomeController.getProgrammingById(id:Int)
+GET     /getlang/:id                                     controllers.HomeController.getLanguageById(id:Int)
+GET     /getprogramming                                controllers.HomeController.getProgrammingList
 GET     /getLang                              controllers.HomeController.getLanguageList
 GET     /getAssignment                              controllers.HomeController.getAssignmentList
 GET     /getProgramming                             controllers.HomeController.getProgrammingList
+POST     /deleteprog/:id                                 controllers.HomeController.deleteProgrammingLanguages(id:Int)
+
+POST     /deletelang/:id                                 controllers.HomeController.deleteLanguages(id:Int)
+
 POST     /deleteCert/:id                                 controllers.HomeController.deleteCertificate(id:Int)
 GET     /getCert/:id                                     controllers.HomeController.getCertificateById(id:Int)
 POST    /editCertificate                                    controllers.HomeController.editCertificate
-GET   /ajax-call          controllers.HomeController.ajaxCall
+POST    /editprogramming                                    controllers.HomeController.editProgramming
+POST    /editlanguage                                    controllers.HomeController.editLanguage
 # An example controller showing how to use dependency injection
 GET     /count                      controllers.CountController.count
 # An example controller showing how to write asynchronous code

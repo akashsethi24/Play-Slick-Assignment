@@ -15,6 +15,7 @@ trait LanguageServiceApi {
   def deleteLanguage(id: Int): Future[Int]
   def updateLanguage(languages: Languages): Future[Int]
   def getLanguageByUser(id: Int): Future[List[Languages]]
+  def getLanguageById(id:Int):Future[Option[Languages]]
 }
 
 class LanguageServices @Inject()(langRepo: LanguageRepository)
@@ -39,4 +40,9 @@ class LanguageServices @Inject()(langRepo: LanguageRepository)
   override def createLanguageTable(): Unit = {
     langRepo.createLanguageTable()
   }
+
+  override def getLanguageById(id:Int):Future[Option[Languages]] ={
+    langRepo.getById(id)
+  }
+
 }

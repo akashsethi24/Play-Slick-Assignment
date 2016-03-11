@@ -19,10 +19,10 @@ GET     /getprog/:id                                     controllers.HomeControl
 GET     /getlang/:id                                     controllers.HomeController.getLanguageById(id:Int)
 GET     /getprogramming                                controllers.HomeController.getProgrammingList
 GET     /getLang                              controllers.HomeController.getLanguageList
-GET     /getAssignment                              controllers.HomeController.getAssignmentList
+GET     /getassignment                              controllers.HomeController.getAssignmentList
 GET     /getProgramming                             controllers.HomeController.getProgrammingList
 POST     /deleteprog/:id                                 controllers.HomeController.deleteProgrammingLanguages(id:Int)
-
+GET     /logout                                 controllers.HomeController.logout
 POST     /deletelang/:id                                 controllers.HomeController.deleteLanguages(id:Int)
 
 POST     /deleteCert/:id                                 controllers.HomeController.deleteCertificate(id:Int)

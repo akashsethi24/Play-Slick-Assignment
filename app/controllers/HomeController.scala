@@ -30,17 +30,30 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
 
   def index = Action { implicit request =>
     if(request.session.get("email").isDefined){
-      Redirect(routes.HomeController.index)
+      Ok(views.html.index(request.session.get("email").get,request.session.get("isAdmin").get.toBoolean))
     }
     else {
-      Ok(views.html.index("Random@Some.com"))
+      Redirect(routes.HomeController.showLogin)
     }
   }
 
   def showLogin = Action { implicit request =>
-    Ok(views.html.login(Forms.loginForm))
+    if(request.session.get("email").isDefined){
+      Redirect(routes.HomeController.index)
+    }
+    else {
+      Ok(views.html.login(Forms.loginForm))
+    }
   }
 
+  def logout = Action{ implicit  request =>
+    if(request.session.get("email").isDefined){
+      Redirect(routes.HomeController.showLogin).withNewSession
+    }
+    else{
+      Redirect(routes.HomeController.showLogin)
+    }
+  }
 
   def processLoginForm = Action.async { implicit request =>
     Forms.loginForm.bindFromRequest.fold(
@@ -68,7 +81,12 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
   }
 
   def showCertificates = Action { implicit request =>
-    Ok(views.html.certificates(Forms.addCertificates, request.session.get("isAdmin").get.toBoolean, request.session.get("userId").get))
+    if(request.session.get("email").isDefined) {
+      Ok(views.html.certificates(Forms.addCertificates, request.session.get("isAdmin").get.toBoolean, request.session.get("userId").get))
+    }
+    else{
+      Redirect(routes.HomeController.showLogin)
+    }
   }
 
   def addLanguage = Action.async { implicit request =>
@@ -262,17 +280,30 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
 
 
   def showLanguages = Action { implicit request =>
-    Ok(views.html.language(Forms.addLanguages, request.session.get("isAdmin").get.toBoolean, request.session.get("userId").get))
+    if(request.session.get("email").isDefined) {
+      Ok(views.html.language(Forms.addLanguages, request.session.get("isAdmin").get.toBoolean, request.session.get("userId").get))
+    }
+    else{
+      Redirect(routes.HomeController.showLogin)
+    }
   }
 
   def showAssignments = Action { implicit request =>
-    assignmentService.createAssignmentTable()
-    Ok(views.html.assignments())
+    if(request.session.get("email").isDefined) {
+      Ok(views.html.assignments(request.session.get("isAdmin").get.toBoolean, request.session.get("userId").get))
+    }
+    else{
+      Redirect(routes.HomeController.showLogin)
+    }
   }
 
   def showProgrammingLanguages = Action { implicit request =>
-    programmingService.createProgrammingTable()
-    Ok(views.html.programingLangauges(Forms.addProgrammingLanguages, request.session.get("isAdmin").get.toBoolean, request.session.get("userId").get))
+    if(request.session.get("email").isDefined) {
+      Ok(views.html.programingLangauges(Forms.addProgrammingLanguages, request.session.get("isAdmin").get.toBoolean, request.session.get("userId").get))
+    }
+    else{
+      Redirect(routes.HomeController.showLogin)
+    }
   }
 
   def deleteProgrammingLanguages(id: Int) = Action.async {
@@ -293,7 +324,12 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
   }
 
   def showAdminPanel = Action { implicit request =>
-    Ok(views.html.adminPanel())
+    if(request.session.get("isAdmin").isDefined && request.session.get("isAdmin").get.toBoolean) {
+      Ok(views.html.adminPanel())
+    }
+    else{
+      Redirect(routes.HomeController.index)
+    }
   }
 
   def deleteCertificate(id: Int) = Action.async {

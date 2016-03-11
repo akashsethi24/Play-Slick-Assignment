@@ -1,16 +1,13 @@
 package controllers
 
 import javax.inject._
-
 import play.api.libs.concurrent.Execution.Implicits._
-import play.api.libs.json.{JsString, Json}
+import play.api.libs.json.Json
 import play.api.mvc._
 import services._
-import play.api.libs.concurrent.Execution.Implicits._
 import play.api.i18n.Messages.Implicits._
 import play.api.Play.current
 import scala.concurrent.Future
-import play.api.libs.json._
 
 /**
   * This controller creates an `Action` to handle HTTP requests to the
@@ -83,7 +80,7 @@ class HomeController @Inject()(service: LoginServiceApi,
       Forms.addCertificates.bindFromRequest.fold(
           badForm =>
             {
-              val list = certificateServices.getCertificateByUser(1)
+              val list = certificateServices.getCertificateByUser(request.session.get("userId").get.toInt)
               list.map { listCert =>
                 Ok(views.html.certificateTable(listCert)).as("text/html")
               }
@@ -91,8 +88,8 @@ class HomeController @Inject()(service: LoginServiceApi,
           certificateData =>
             {
               certificateServices.insertCertificate(certificateData).flatMap {
-                r =>
-                  certificateServices.getCertificateByUser(1).map { listCert =>
+                number =>
+                  certificateServices.getCertificateByUser(request.session.get("userId").get.toInt).map { listCert =>
                     Ok(views.html.certificateTable(listCert))
                   }
               }
@@ -106,7 +103,7 @@ class HomeController @Inject()(service: LoginServiceApi,
           badForm =>
             {
               println(badForm)
-              val list = certificateServices.getCertificateByUser(1)
+              val list = certificateServices.getCertificateByUser(request.session.get("userId").get.toInt)
               list.map { listCert =>
                 Ok(views.html.certificateTable(listCert)).as("text/html")
               }
@@ -116,7 +113,7 @@ class HomeController @Inject()(service: LoginServiceApi,
               println(certificateData)
               certificateServices.updateCertificate(certificateData).flatMap {
                 r =>
-                  certificateServices.getCertificateByUser(1).map { listCert =>
+                  certificateServices.getCertificateByUser(request.session.get("userId").get.toInt).map { listCert =>
                     Ok(views.html.certificateTable(listCert))
                   }
               }
@@ -125,32 +122,32 @@ class HomeController @Inject()(service: LoginServiceApi,
     }
 
   def getCertificateList =
-    Action.async {
-      val a = certificateServices.getCertificateByUser(1)
+    Action.async { implicit request =>
+      val a = certificateServices.getCertificateByUser(request.session.get("userId").get.toInt)
       a.map { list =>
         Ok(views.html.certificateTable(list)).as("text/html")
       }
     }
 
   def getLanguageList =
-    Action.async {
-      val a = languageService.getLanguageByUser(1)
+    Action.async { implicit request =>
+      val a = languageService.getLanguageByUser(request.session.get("userId").get.toInt)
       a.map { list =>
         Ok(views.html.languageTable(list)).as("text/html")
       }
     }
 
   def getAssignmentList =
-    Action.async {
-      val a = assignmentService.getAssignmentByUser(1)
+    Action.async { implicit request =>
+      val a = assignmentService.getAssignmentByUser(request.session.get("userId").get.toInt)
       a.map { list =>
         Ok(views.html.assignmentTable(list)).as("text/html")
       }
     }
 
   def getProgrammingList =
-    Action.async {
-      val a = programmingService.getProgrammingByUser(1)
+    Action.async { implicit request =>
+      val a = programmingService.getProgrammingByUser(request.session.get("userId").get.toInt)
       a.map { list =>
         Ok(views.html.programmingTable(list)).as("text/html")
       }
@@ -180,9 +177,9 @@ class HomeController @Inject()(service: LoginServiceApi,
     }
 
   def deleteCertificate(id: Int) =
-    Action.async {
+    Action.async { implicit request =>
       certificateServices.deleteCertificate(id).flatMap { r =>
-        certificateServices.getCertificateByUser(1).map { listCert =>
+        certificateServices.getCertificateByUser(request.session.get("userId").get.toInt).map { listCert =>
           Ok(views.html.certificateTable(listCert))
         }
       }

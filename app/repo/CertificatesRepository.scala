@@ -16,10 +16,11 @@ class CertificatesRepository @Inject()(
     extends HasDatabaseConfigProvider[JdbcProfile] with CertificateTable {
   import driver.api._
 
-  def createCertificateTable(): Unit = {
+  def createCertificateTable(): Boolean = {
     val createQuery = certificateTable.schema.create
     println(createQuery.statements.head)
     db.run(createQuery)
+    true
   }
 
   def getById(id: Int): Future[Option[Certificates]] = {

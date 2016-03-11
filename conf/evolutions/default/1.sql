@@ -19,5 +19,5 @@ DROP table "users";
 DROP table "certificate";
 DROP table "assignment";
 DROP table "language";
-DROP table "programmingLang";
+DROP table "programminglang";
 

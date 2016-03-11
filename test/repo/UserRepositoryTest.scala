@@ -5,7 +5,6 @@ import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import play.api.Application
 import play.api.test.WithApplication
-
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 

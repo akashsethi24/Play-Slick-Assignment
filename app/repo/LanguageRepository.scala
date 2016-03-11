@@ -14,8 +14,9 @@ class LanguageRepository @Inject()(
     extends HasDatabaseConfigProvider[JdbcProfile] with LanguageTable {
   import driver.api._
 
-  def createLanguageTable(): Unit = {
+  def createLanguageTable(): Boolean = {
     db.run(languageTable.schema.create)
+    true
   }
 
   def insertLanguage(languages: Languages): Future[Int] = {

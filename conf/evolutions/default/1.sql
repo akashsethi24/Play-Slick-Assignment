@@ -11,13 +11,13 @@ INSERT INTO "assignment" values(1,1,'Scala Assignment','32/13/2444', 'Average',5
 create table "language" ("lang_id" SERIAL NOT NULL PRIMARY KEY,"user_id" INTEGER NOT NULL, "language" VARCHAR(50) NOT NULL, "lang_fluency" VARCHAR(50) NOT NULL);
 INSERT INTO "language" values(1,1,'Hindi','Excellent');
 
-create table "programmingLang" ("id" SERIAL NOT NULL PRIMARY KEY,"user_id" INTEGER NOT NULL, "name" VARCHAR(50) NOT NULL, "skill_level" VARCHAR(50) NOT NULL);
-INSERT INTO "programmingLang" values(1,1,'Scala','Good');
+create table "programminglang" ("id" SERIAL NOT NULL PRIMARY KEY,"user_id" INTEGER NOT NULL, "name" VARCHAR(50) NOT NULL, "skill_level" VARCHAR(50) NOT NULL);
+INSERT INTO "programminglang" values(1,1,'Scala','Good');
 
 # --- !Downs
 DROP table "users";
 DROP table "certificate";
 DROP table "assignment";
 DROP table "language";
-DROP table "programmingLang";
+DROP table "programminglang";
 

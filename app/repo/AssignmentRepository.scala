@@ -15,8 +15,9 @@ class AssignmentRepository @Inject()(
     extends HasDatabaseConfigProvider[JdbcProfile] with AssignmentTable {
   import driver.api._
 
-  def createAssignmentTable(): Unit = {
+  def createAssignmentTable(): Boolean = {
     db.run(assignmentTable.schema.create)
+    true
   }
 
   def insertAssignment(assignments: Assignments): Future[Int] = {

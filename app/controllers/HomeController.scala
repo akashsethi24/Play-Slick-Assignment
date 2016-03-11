@@ -19,9 +19,9 @@ import play.api.libs.json._
 @Singleton
 class HomeController @Inject()(service: LoginServiceApi,
                                certificateServices: CertificateServiceApi,
-                               languageService: LanguageServices,
-                               assignmentService: AssignmentServices,
-                               programmingService: ProgrammingServices)
+                               languageService: LanguageServiceApi,
+                               assignmentService: AssignmentServiceApi,
+                               programmingService: ProgrammingServiceApi)
     extends Controller {
 
   /**
@@ -72,9 +72,7 @@ class HomeController @Inject()(service: LoginServiceApi,
 
   def showCertificates =
     Action { implicit request =>
-      certificateServices.createCertificateTable
-      val userId = request.session.get("email").get
-      println(userId)
+      certificateServices.createCertificateTable()
       Ok(views.html.certificates(Forms.addCertificates,
                                  request.session.get("isAdmin").get.toBoolean,
                                  request.session.get("userId").get))
@@ -124,11 +122,6 @@ class HomeController @Inject()(service: LoginServiceApi,
               }
             }
       )
-    }
-
-  def ajaxCall =
-    Action { implicit request =>
-      Ok("Ajax Call!")
     }
 
   def getCertificateList =

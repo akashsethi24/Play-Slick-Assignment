@@ -1,7 +1,6 @@
 package repo
 
 import javax.inject.Inject
-
 import models.ProgrammingLanguages
 import play.api.db.slick.{HasDatabaseConfigProvider, DatabaseConfigProvider}
 import slick.driver.JdbcProfile
@@ -15,8 +14,9 @@ class ProgrammingLangRepository @Inject()(
     extends HasDatabaseConfigProvider[JdbcProfile] with ProgrammingLangTable {
   import driver.api._
 
-  def createProgrammingTable(): Unit = {
+  def createProgrammingTable(): Boolean = {
     db.run(programmingLangTable.schema.create)
+    true
   }
 
   def insertProgrammingLang(
@@ -58,7 +58,7 @@ private [repo] trait ProgrammingLangTable {
   protected val programmingLangTable = TableQuery[ProgrammingLangTable]
 
   protected class ProgrammingLangTable(tag: Tag)
-      extends Table[ProgrammingLanguages](tag, "programmingLang") {
+      extends Table[ProgrammingLanguages](tag, "programminglang") {
     val id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
     val userId = column[Int]("user_id")

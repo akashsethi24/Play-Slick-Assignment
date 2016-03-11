@@ -19,7 +19,6 @@ GET     /getProgramming                             controllers.HomeController.g
 POST     /deleteCert/:id                                 controllers.HomeController.deleteCertificate(id:Int)
 GET     /getCert/:id                                     controllers.HomeController.getCertificateById(id:Int)
 POST    /editCertificate                                    controllers.HomeController.editCertificate
-GET   /ajax-call          controllers.HomeController.ajaxCall
 # An example controller showing how to use dependency injection
 GET     /count                      controllers.CountController.count
 # An example controller showing how to write asynchronous code

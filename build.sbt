@@ -28,3 +28,5 @@ resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repos
 routesGenerator := InjectedRoutesGenerator
 
 javaOptions in Test += "-Dconfig.file=conf/application.test.conf"
+
+coverageExcludedPackages :="<empty>;router\\..*;"

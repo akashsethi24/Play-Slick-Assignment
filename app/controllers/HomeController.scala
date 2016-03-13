@@ -210,6 +210,14 @@ class HomeController @Inject()(service: LoginServiceApi, certificateServices: Ce
     }
   }
 
+  def getAssignmentListByUser(id:Int) = Action.async { implicit request =>
+
+    val a = assignmentService.getAssignmentByUser(id)
+    a.map { list =>
+      Ok(views.html.assignmentTableAdmin(list)).as("text/html")
+    }
+  }
+
   def getProgrammingList = Action.async { implicit request =>
 
     val a = programmingService.getProgrammingByUser(request.session.get("userId").get.toInt)

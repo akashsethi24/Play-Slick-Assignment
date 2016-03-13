@@ -15,20 +15,22 @@
         <td>@user.name</td>
         <td>
             <button type="button" class="btn btn-warning certificate" value="@user.id">
-                <span class="glyphicon glyphicon-pencil"></span> certificate
+                <span class="glyphicon glyphicon-education"></span> certificate
             </button>
         </td>
         <td>
-            <button type="button"  value="@user.id" class="btn btn-danger language"><span class="glyphicon glyphicon-remove"></span> Language</button>
+            <button type="button"  value="@user.id" class="btn btn-danger language">
+                <span class="glyphicon glyphicon-comment"></span> Language</button>
         </td>
         <td>
             <button type="button" class="btn btn-warning assignment" value="@user.id" data-toggle="modal"
                     data-target="#certificateEditModal">
-                <span class="glyphicon glyphicon-pencil"></span> Assignment
+                <span class="glyphicon glyphicon-folder-open"></span> Assignment
             </button>
         </td>
         <td>
-            <button type="button"  value="@user.id" class="btn btn-danger programming"><span class="glyphicon glyphicon-remove"></span> ProgrammingLanguage</button>
+            <button type="button"  value="@user.id" class="btn btn-danger programming">
+                <span class="glyphicon glyphicon-floppy-disk"></span> ProgrammingLanguage</button>
         </td>
     </tr>
     }
@@ -41,7 +43,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Add New Certificate</h4>
+                <h4 class="modal-title">Certificate</h4>
             </div>
             <div class="modal-body" id="certificateShow">
 
@@ -60,7 +62,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Add New Certificate</h4>
+                <h4 class="modal-title">Language</h4>
             </div>
             <div class="modal-body" id="languageShow">
 
@@ -79,12 +81,34 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Add New Certificate</h4>
+                <h4 class="modal-title">Programming Languages</h4>
             </div>
             <div class="modal-body" id="programmingShow">
 
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="assignmentShowModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="col-md-12">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Assignments</h4>
+                </div>
+            </div>
+            <div class="modal-body" id="assignmentShow">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Add Assignment</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -111,6 +135,13 @@ $(".programming").click(function(){
 $.get("getprogbyuser/"+id, function(data, status){
                 $("#programmingShow").html(data);
                 $("#programmingShowModal").modal('show');
+        });
+});
+$(".assignment").click(function(){
+    var id = $(this).attr('value');
+$.get("getassignbyuser/"+id, function(data, status){
+                $("#assignmentShow").html(data);
+                $("#assignmentShowModal").modal('show');
         });
 });
 </script>

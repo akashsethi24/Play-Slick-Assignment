@@ -17,7 +17,12 @@ libraryDependencies ++= Seq(
   "com.typesafe.play"   %%   "play-slick-evolutions"   %   "1.1.1",
   "com.h2database"    % 	   "h2"                    %   "1.4.187" ,
   "org.postgresql" % "postgresql" % "9.4-1206-jdbc4",
-  specs2 % Test
+  specs2 % Test,
+  "org.seleniumhq.selenium" % "selenium-server" % "2.52.0",
+  "org.seleniumhq.selenium" % "selenium-firefox-driver" % "2.52.0",
+  "org.scalatest" %% "scalatest" % "2.2.1" % "test",
+  "org.scalatestplus" %% "play" % "1.4.0-M3" % "test",
+  "org.seleniumhq.selenium" % "selenium-htmlunit-driver" % "2.52.0"
 )
 
 libraryDependencies += "org.mockito" % "mockito-all" % "1.9.5"

@@ -12,6 +12,7 @@ GET     /programming                           controllers.HomeController.showPr
 GET     /getcertbyuser/:id                          controllers.HomeController.getCertificateListByUser(id:Int)
 GET     /getlangbyuser/:id                          controllers.HomeController.getLanguageListByUser(id:Int)
 GET     /getprogbyuser/:id                          controllers.HomeController.getProgrammingListByUser(id:Int)
+GET     /getassignbyuser/:id                          controllers.HomeController.getAssignmentListByUser(id:Int)
 GET     /getuser                                    controllers.HomeController.getAllUser
 GET     /adminpanel                           controllers.HomeController.showAdminPanel
 POST    /loginsubmit                            controllers.HomeController.processLoginForm

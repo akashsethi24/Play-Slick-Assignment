@@ -7,13 +7,14 @@
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    height: 100%;
+    height: auto;
     padding-bottom:50px;
+
 }
 </style>
 <div class="container bgImg" >
     <div class="col-md-4"></div>
-    <div class="col-md-4"  style="margin-top:40px;border:solid;padding-top:10px;padding-bottom:30px;background-color:white;">
+    <div class="col-md-4"  style="box-shadow: 10px 10px 5px #888888;margin-top:40px;padding-top:10px;padding-bottom:30px;background-color:white;">
         <h2 style="margin-bottom:20px;text-align:center;">Login</h2>
         <hr>
         @helper.form(action = routes.HomeController.processLoginForm) {

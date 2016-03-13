@@ -20,6 +20,9 @@ libraryDependencies ++= Seq(
   specs2 % Test
 )
 
+libraryDependencies += "org.mockito" % "mockito-all" % "1.9.5"
+
+libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.5"
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
 // Resolver is needed only for SNAPSHOT versions

@@ -52,7 +52,7 @@ class LanguageRepository @Inject()(
 
 }
 
-private [repo] trait LanguageTable {
+private[repo] trait LanguageTable {
   self: HasDatabaseConfigProvider[JdbcProfile] =>
 
   import driver.api._

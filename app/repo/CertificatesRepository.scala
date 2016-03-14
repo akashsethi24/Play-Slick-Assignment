@@ -18,7 +18,6 @@ class CertificatesRepository @Inject()(
 
   def createCertificateTable(): Boolean = {
     val createQuery = certificateTable.schema.create
-    println(createQuery.statements.head)
     db.run(createQuery)
     true
   }
@@ -39,10 +38,8 @@ class CertificatesRepository @Inject()(
   }
 
   def updateCertificate(certificates: Certificates): Future[Int] = {
-    println(certificates + "End")
     val updateCertificate =
       certificateTable.filter(_.id === certificates.id).update(certificates)
-    println("Statement: " + updateCertificate.statements.head)
     db.run(updateCertificate)
   }
 
@@ -55,7 +52,7 @@ class CertificatesRepository @Inject()(
   }
 }
 
-private [repo] trait CertificateTable {
+private[repo] trait CertificateTable {
   self: HasDatabaseConfigProvider[JdbcProfile] =>
 
   import driver.api._

@@ -11,8 +11,8 @@ import scala.concurrent.Future
   * Created by akash on 8/3/16.
   */
 class ProgrammingLangRepository @Inject()(
-    protected val dbConfigProvider: DatabaseConfigProvider)
-    extends HasDatabaseConfigProvider[JdbcProfile] with ProgrammingLangTable {
+                                           protected val dbConfigProvider: DatabaseConfigProvider)
+  extends HasDatabaseConfigProvider[JdbcProfile] with ProgrammingLangTable {
 
   import driver.api._
 
@@ -59,25 +59,25 @@ class ProgrammingLangRepository @Inject()(
 
 }
 
-  private[repo] trait ProgrammingLangTable {
-    self: HasDatabaseConfigProvider[JdbcProfile] =>
+private[repo] trait ProgrammingLangTable {
+  self: HasDatabaseConfigProvider[JdbcProfile] =>
 
-    import driver.api._
+  import driver.api._
 
-    protected val programmingLangTable = TableQuery[ProgrammingLangTable]
+  protected val programmingLangTable = TableQuery[ProgrammingLangTable]
 
-    protected class ProgrammingLangTable(tag: Tag) extends Table[ProgrammingLanguages](tag, "programminglang") {
+  protected class ProgrammingLangTable(tag: Tag) extends Table[ProgrammingLanguages](tag, "programminglang") {
 
-      val id = column[Int]("id", O.PrimaryKey, O.AutoInc)
+    val id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
-      val userId = column[Int]("user_id")
-      val name = column[String]("name", O.SqlType("VARCHAR(30)"))
-      val skillLevel = column[String]("skill_level", O.SqlType("VARCHAR(20)"))
+    val userId = column[Int]("user_id")
+    val name = column[String]("name", O.SqlType("VARCHAR(30)"))
+    val skillLevel = column[String]("skill_level", O.SqlType("VARCHAR(20)"))
 
-      def * =
-        (id, userId, name, skillLevel) <>
-          (ProgrammingLanguages.tupled, ProgrammingLanguages.unapply)
-    }
-
+    def * =
+      (id, userId, name, skillLevel) <>
+        (ProgrammingLanguages.tupled, ProgrammingLanguages.unapply)
   }
+
+}
 

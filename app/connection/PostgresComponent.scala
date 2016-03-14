@@ -11,7 +11,7 @@ trait PostgresComponent extends DBComponent {
   val db: Database = PostgresDB.connectionPool
 }
 
-private [connection] object PostgresDB {
+private[connection] object PostgresDB {
   import slick.driver.PostgresDriver.api._
 
   val connectionPool = Database.forConfig("postgres")

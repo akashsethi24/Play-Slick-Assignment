@@ -48,7 +48,7 @@ class AssignmentRepository @Inject()(
   }
 }
 
-private [repo] trait AssignmentTable {
+private[repo] trait AssignmentTable {
   self: HasDatabaseConfigProvider[JdbcProfile] =>
   import driver.api._
 

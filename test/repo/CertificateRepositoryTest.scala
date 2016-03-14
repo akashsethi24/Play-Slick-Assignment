@@ -24,7 +24,6 @@ class CertificateRepositoryTest extends Specification{
     "get a certificate" in new WithApplication {
       val result = certRepo.getCertificatesByUser(1)
       val response = Await.result(result,Duration.Inf)
-      println(response)
       response.head.name === "Test Certificate"
       response.head.description === "Test Desc"
     }
@@ -32,28 +31,24 @@ class CertificateRepositoryTest extends Specification{
     "Insert a certificate" in new WithApplication {
       val result = certRepo.insertCertificate(Certificates(2,1,"Another Certificate","Another Desc",2015))
       val response = Await.result(result,Duration.Inf)
-      println(response)
       response === 2
     }
 
     "Delete a certificate" in new WithApplication {
       val result = certRepo.deleteCertificate(1)
       val response = Await.result(result,Duration.Inf)
-      println(response)
       response === 1
     }
 
     "Delete a invalid certificate" in new WithApplication {
       val result = certRepo.deleteCertificate(122)
       val response = Await.result(result,Duration.Inf)
-      println(response)
       response === 0
     }
 
     "Update certificate" in new WithApplication {
       val result = certRepo.updateCertificate(Certificates(1,1,"Another Certificate","Another Desc",2015))
       val response = Await.result(result,Duration.Inf)
-      println(response)
       response === 1
     }
 

@@ -18,7 +18,6 @@ class UserRepository @Inject()(
 
   def creteTable(): Unit = {
     val createQuery = userTable.schema.create
-    println(createQuery.statements.head)
     db.run(createQuery)
   }
 
@@ -32,7 +31,7 @@ class UserRepository @Inject()(
   }
 }
 
-private [repo] trait UserTable {
+private[repo] trait UserTable {
   self: HasDatabaseConfigProvider[JdbcProfile] =>
   import driver.api._
 
